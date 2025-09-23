@@ -39,7 +39,7 @@ pipeline{
 
                     echo "I'm here 2. installed dotenv manually. exited session"
 
-                    echo "this is the 5 test"
+                    echo "this is the 6 test"
 
                 '''
             }

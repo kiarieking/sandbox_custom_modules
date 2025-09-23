@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- <report
+            id="report_fuel_voucher"
+            model="fuel.voucher"
+            string="Quotation/Order"
+            report_type="qweb-pdf"
+            name="fuel_voucher_module.report_fuel_voucher_document"
+            file="fuel_voucher_module.report_fuel_voucher_document"
+            print_report_name="(object.status in ('draft') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+        /> -->
+
+        <record id="report_fuel_voucher" model="ir.actions.report">
+            <field name="name">Fuel Voucher</field>
+            <field name="model">fuel.voucher</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">fuel_voucher_module.report_fuel_voucher_document</field>
+            <field name="report_file">fuel_voucher_module.report_fuel_voucher_document</field>
+            <!-- <field name="report_name">(object.status in ('draft') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)</field>  -->
+            <field name="binding_model_id" ref="model_fuel_voucher"/>         
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

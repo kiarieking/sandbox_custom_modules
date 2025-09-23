@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="view_fuel_voucher_report">
+        <t t-call="web.internal_layout">
+
+             <t t-foreach="docs" t-as="doc">
+                <div class="page">
+                    <div class="oe_structure"/>
+
+                    <h2 class="mt16">
+                        <span t-if="doc.status not in ['draft']">Fuel Order # </span>
+                        <span t-if="doc.status in ['draft']">Fuel Quotation # </span>
+                        <span t-field="doc.name"/>
+                    </h2>
+
+                    <div class="row mt32 mb32" id="informations">
+                        <div t-if="doc.date and doc.status not in ['draft']" class="col-auto mw-100 mb-2">
+                            <strong>Order Date:</strong>
+                            <p class="m-0" t-field="doc.date"/>
+                        </div>
+                        <div t-if="doc.date and doc.status in ['draft']" class="col-auto mw-100 mb-2">
+                            <strong>Quotation Date:</strong>
+                            <p class="m-0" t-field="doc.date" t-options='{"widget": "date"}'/>
+                        </div>
+
+                        <div t-if="doc.create_uid.name" class="col-auto mw-100 mb-2">
+                            <strong>Staff:</strong>
+                            <p class="m-0" t-field="doc.create_uid"/>
+                        </div>
+
+                        <div t-if="doc.carrier_id.name" class="col-auto mw-100 mb-2">
+                            <strong>Carrier:</strong>
+                            <p class="m-0" t-field="doc.carrier_id"/>
+                        </div>
+
+                        <div t-if="doc.reference_number" class="col-auto mw-100 mb-2">
+                            <strong>Reference:</strong>
+                            <p class="m-0" t-field="doc.reference_number"/>
+                        </div>
+
+                        <div t-if="doc.vehicle_id.license_plate" class="col-auto mw-100 mb-2">
+                            <strong>Vehicle:</strong>
+                            <p class="m-0" t-field="doc.vehicle_id.license_plate"/>
+                        </div>
+                    </div>
+
+                        <table class="table table-sm o_main_table">
+                        <thead>
+                            <tr>
+                                <th name="th_description" class="text-left">Product</th>
+                                <th name="th_description" class="text-left">Description</th>
+                                <th name="th_description" class="text-left">Narration</th>
+                                <th name="th_quantity" class="text-right">Quantity</th>
+                                <th name="th_priceunit" class="text-right">Unit Price</th>
+                            </tr>
+                        </thead>
+                        <tbody class="sale_tbody">
+                            <t t-set="current_subtotal" t-value="0"/>
+
+                            <t t-foreach="doc.order_ids" t-as="line">
+                                <tr>
+                                    <td name="td_name"><span t-field="line.product_id.name"/></td>
+                                    <td name="td_name"><span t-field="line.description"/></td>
+                                    <td name="td_name"><span t-field="line.narration"/></td>
+                                    <td name="td_quantity" class="text-right">
+                                        <span t-field="line.quantity"/>
+                                    </td>
+                                    <td name="td_priceunit" class="text-right">
+                                        <span t-field="line.price_unit"/>
+                                    </td>
+                                    <t t-set="current_section" t-value="line"/>
+                                    <t t-set="current_subtotal" t-value="0"/>       
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <div class="clearfix" name="so_total_summary">
+                        <div id="total" class="row" name="total">
+                            <table class="table table-sm">
+
+                                <tr class="is-subtotal text-right">
+                                    <td name="td_section_subtotal" colspan="99">
+                                        <strong class="mr16">Subtotal</strong>
+                                        <span
+                                            t-esc="doc.amount_total"
+                                            t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
+                                        />
+                                    </td>
+                                </tr>
+
+                                <tr class="is-subtotal text-right">
+                                    <td name="td_section_subtotal" colspan="99">
+                                        <strong class="mr16">Total</strong>
+                                        <span
+                                            t-esc="doc.amount_total"
+                                            t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
+                                        />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_fuel_voucher_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="fuel_voucher_module.view_fuel_voucher_report" />
+            </t>
+        </t>
+    </template>
+</odoo>

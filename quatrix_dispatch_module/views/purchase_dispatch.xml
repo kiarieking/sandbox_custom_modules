@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_purchase_dispatch_filter" model="ir.ui.view">
+        <field name="name">purchase.dispatch.filter</field>
+        <field name="model">purchase.dispatch</field>
+        <field name="arch" type="xml">
+            <search string="Search Dispatch Orders">
+                <field name="name" string="Dispatch" filter_domain="['|', '|', ('name', 'ilike', self), ('vehicle_id.license_plate', 'ilike', self), ('order_ids.order_no','ilike',self)]"/>
+                
+                <!-- <field name="partner_id"/>
+                <field name="date_dispatch"/>
+                <field name="status"/>
+                <field name="vehicle_id"/>
+                <field name = "order_ids" 
+                    string="Order Number"
+                    filter_domain="[('order_ids.order_no','ilike',self)]"
+                /> -->
+                <separator/>
+                  <filter string="Quotation" name="draft" domain="[('status','=','draft')]"/>
+                  <filter string="Dispatch Order" name="order" domain="[('status','=','order')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="status" domain="[]" context="{'group_by':'status'}"/>
+                    <filter string="Customer" name="partner_id" domain="[]" context="{'group_by':'partner_id'}"/>
+                </group>
+           </search>
+        </field>
+    </record>
+
+    <record id="purchase_dispatch_tree" model="ir.ui.view">
+        <field name="name">purchase.dispatch.tree</field>
+        <field name="model">purchase.dispatch</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="status=='cancel'" multi_edit="1">
+                <field name="name"/>
+                <field name="date_dispatch"/>
+                <field name="partner_id"/>
+                <field name="date_delivery"/>
+                <field name="vehicle_id"/>
+                <field name="create_date"/>
+                <field name="create_uid"/>
+                <field name="write_date"/>
+                <field name="write_uid"/>
+                <field name="carrier_charges"/>
+                <field name="amount" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="currency_id" invisible="1" />
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="purchase_dispatch_form" model="ir.ui.view">
+            <field name="name">purchase.dispatch.form</field>
+            <field name="model">purchase.dispatch</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                     <button name="action_post" type="object" attrs="{'invisible': [('status','not in', 'order')]}" class="btn-primary" string="Post" groups="base.group_user" />
+                      <button name="action_confirm" type="object" attrs="{'invisible': [('status','not in', 'draft')]}" class="btn-primary" string="Confirm Delivery" groups="base.group_user"/>
+                      <button name="action_cancel" type="object" string="Cancel Delivery" attrs="{'invisible': [('status','in', ('draft', 'cancel'))]}" groups="base.group_user"/>
+                      <button name="action_reset" type="object" attrs="{'invisible': [('status','not in','cancel')]}" string="Reset to draft" groups="base.group_user" />
+                        <field name="status" widget="statusbar"/>
+                    </header>
+
+                    <sheet>
+
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="get_fuel_voucher" icon="fa-pencil-square-o">
+                            <field string="Fuel Voucher" name="fuel_voucher_count" widget="statinfo"/>
+                        </button>
+
+                        <button class="oe_stat_button" type="object" name="action_get_breakages" icon="fa-pencil-square-o">
+                            <field string="Breakages" name="breakages_count" widget="statinfo"/>
+                        </button>
+                    </div>
+
+                     <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group name="group_top">
+                        <group name="group_left">
+                            <field  attrs="{'readonly': [('status', 'in', ('order','cancel', 'posted'))]}" name="partner_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}"  options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                            <field  attrs="{'readonly': [('status', 'in', ('order','cancel', 'posted'))]}" name="vehicle_id" options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}'/>
+                            <field name="potype" on_change="get_potype(potype)" />
+                            <field name="purchase_id" options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}' />
+                            <field name="ern_no"/> 
+                            <field name="ern_qty"/>
+                            <field name="rt_no"/> 
+                            <field name="rt_qty"/> 
+                            <field name="pod_upload" filename="file_name" />
+                             <!--attrs = "{'invisible': [('pod_link', '!=', False)]}"  -->
+                        </group>
+                        <group name="group_right">
+                            <field  readonly="1"  name="vendor_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'supplier', 'show_address': 1, 'show_vat': True}"  options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}'/>
+                            <field name="date_dispatch"  attrs="{'readonly': [('status', 'in', ('order','cancel', 'posted'))]}"/>
+                            <field name="date_order"/>
+                            <field name="date_delivery"  attrs="{'readonly': [('status', 'in', ('order','cancel', 'posted'))]}"/>
+                            <!-- <field name="driver_phone_number"/> -->
+                            <field name="file_name" invisible="1"/>
+                            <field name="sale_doc" readonly="1"/>
+                            <field name="inv_doc" readonly="1"/>
+                        </group>
+                        <group name="group_left">
+                            <field name="pod_link" readonly="1"  widget = "url" attrs = "{'invisible': [('pod_link', '=', False)]}" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="order_lines" string="Orders">
+                            <field
+                                name="order_ids"
+                                widget="section_and_note_one2many"
+                                edit="true"
+                                attrs="{'readonly': [('status', 'in', ('order','cancel', 'posted'))]}"
+                            >
+                                <tree create="true" delete="true" editable="bottom">
+                                    <field 
+                                        name="product_id"
+                                        options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}'
+                                        domain="[('product_tmpl_id.partner_id', '=', parent.partner_id), ('is_active', '=', True)]"
+                                    />
+                                    <field name="order_no"/>
+                                    <field name="description"/>
+                                    <!-- <field name="partner_id"/> -->
+                                    <field name="notes"/>
+                                    <field name="quantity"/>
+                                    <field name="price_unit"/>
+                                    <field name="carrier_price"/>
+                                    <!-- <field name="additional_charges"/> -->
+                                    <field name="amount"/>
+                                </tree>
+                            </field>
+
+                             <group name="note_group" col="6">
+                                <!-- <group colspan="4">
+                                    <field name="note" nolabel="1" placeholder="Terms and conditions..."/>
+                                </group> -->
+                                <group class="oe_subtotal_footer oe_right" colspan="2">
+                                    <field name="amount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                    <!-- <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/> -->
+                                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                        <label for="amount" />
+                                    </div>
+                                    <field name="amount" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                    <field name="currency_id" invisible="1" />
+                                </group>
+                                <div class="oe_clear"/>
+                            </group>
+                        </page>
+                    </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="po_dispatch_menu_action" model="ir.actions.act_window">
+            <field name="name">LPO Quotations</field>
+            <field name="res_model">purchase.dispatch</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="view_purchase_dispatch_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new dispatch quotation
+                </p><p>
+                    You must define a product for everything you dispatch,
+                    whether it's a storable product, a consumable or a service.
+                </p>
+            </field>
+        </record>
+
+        <record id="po_action_orders" model="ir.actions.act_window">
+            <field name="name">LPO Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.dispatch</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_purchase_dispatch_filter"/>
+            <field name="context">{}</field>
+            <field name="domain">[('status', 'not in', ('draft', 'cancel'))]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new quotation, the first step of a new dispatch!
+                </p><p>
+                    Once the quotation is confirmed, it becomes a dispatch order.<br/>
+                </p>
+            </field>
+        </record>
+
+            <!-- Top menu item -->
+
+        <!-- <menuitem name="Dispatch" id="dispatch_menu" web_icon="quatrix_dispatch_module,static/description/icon.png"/> -->
+
+        <!-- menu categories -->
+        <menuitem name="LPO Quotations" id="po_quotations_menu" parent="purchase_orders_menu" action="po_dispatch_menu_action"/>
+        <menuitem name="LPO Orders" id="po_orders_menu" parent="purchase_orders_menu" action="po_action_orders" />
+</odoo>

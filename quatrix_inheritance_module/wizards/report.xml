@@ -1,0 +1,22 @@
+<odoo>
+    <record id="partner_statement" model="ir.actions.report">
+        <field name="name">Partner Statement</field>
+        <field name="model">partner.statement</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">quatrix_inheritance_module.partner_statement_document</field>
+    </record>
+
+    <record id="accounting_revenue_cost" model="ir.actions.report">
+        <field name="name">Accounting Revenue Cost</field>
+        <field name="model">accounting.revenue.cost</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">quatrix_inheritance_module.accounting_revenue_cost_report</field>
+    </record>
+
+    <record id="sale_uninvoiced_report" model="ir.actions.report">
+        <field name="name">Uninvoiced Sale Documents</field>
+        <field name="model">sale.uninvoiced.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">quatrix_inheritance_module.sale_uninvoiced</field>
+    </record>
+</odoo>

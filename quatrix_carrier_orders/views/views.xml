@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_carrier_order_filter" model="ir.ui.view">
+        <field name="name">carrier.order.filter</field>
+        <field name="model">carrier.order</field>
+        <field name="arch" type="xml">
+            <search string="Carrier Orders">
+                <field name="name" string="Orders" 
+                    filter_domain="['|', '|', '|', '|',('name', 'ilike', self), ('vendor_id.name', 'ilike', self), 
+                    ('vehicle_id.license_plate', 'ilike', self), ('order_no','ilike',self), ('reference', 'ilike', self)]"
+                />
+                
+                <separator/>
+                  <filter string="Quotation" name="draft" domain="[('status','=','draft')]"/>
+                  <filter string="Dispatch Order" name="order" domain="[('status','=','order')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="status" domain="[]" context="{'group_by':'status'}"/>
+                    <filter string="Vehicle" name="vehicle_id" domain="[]" context="{'group_by':'vehicle_id'}"/>
+                    <filter string="Carrier/Subcon" name="vendor_id" domain="[]" context="{'group_by':'vendor_id'}"/>
+                </group>
+           </search>
+        </field>
+    </record>
+
+    <record id="carrier_order_tree" model="ir.ui.view">
+        <field name="name">carrier.order.tree</field>
+        <field name="model">carrier.order</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="status=='cancel'" multi_edit="1">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="vendor_id"/>
+                <field name="vehicle_id"/>
+                <field name="order_no"/>
+                <field name="reference"/>
+                <field name="create_uid"/>
+                <field name="write_date"/>
+                <field name="write_uid"/>
+                <field name="amount" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="currency_id" invisible="1" />
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="carrier_order_form" model="ir.ui.view">
+        <field name="name">carrier.order.form</field>
+        <field name="model">carrier.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                  <button name="action_confirm" type="object" attrs="{'invisible': [('status','not in', 'draft')]}" class="btn-primary" string="Confirm" groups="base.group_user"/>
+                  <button name="action_post" type="object" attrs="{'invisible': [('status','not in', 'order')]}" class="btn-primary" string="Post" groups="base.group_user" />
+                  <button name="action_cancel" type="object" string="Cancel" attrs="{'invisible': [('status','in', ('draft', 'cancel'))]}" groups="base.group_user"/>
+                  <button name="action_reset" type="object" attrs="{'invisible': [('status','not in', 'cancel')]}" string="Reset to draft" groups="base.group_user" />
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+
+                  <div class="oe_title">
+                      <h1>
+                          <field name="name" readonly="1"/>
+                      </h1>
+                  </div>
+                  <group name="group_top">
+                      <group name="group_left">
+                          <field  attrs="{'readonly': [('status', 'in', ('draft','order','cancel', 'posted'))]}" name="vendor_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}" options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}'/>
+                          <field  attrs="{'readonly': [('status', 'in', ('order','cancel', 'posted'))]}" name="vehicle_id" filter_by="license_plate" options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}'/>
+                          <field name="order_no" />
+                          <field name="reference" />
+                          <field name="description" />
+                      </group>
+                      <group name="group_right">
+                          <field name="date"/>
+                          <field name="quantity"/>
+                          <field name="carrier_price"/>
+                          <field name="amount" attrs="{'readonly': [('status', 'in', ('order','draft','cancel', 'posted'))]}"/>
+                      </group>
+                  </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="carrier_orders_menu_action" model="ir.actions.act_window">
+        <field name="name">Carrier Quotations</field>
+        <field name="res_model">carrier.order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="search_view_id" ref="view_carrier_order_filter"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new quotation
+            </p><p>
+                You must define a product for every order,
+                whether it's a storable product, a consumable or a service.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_orders" model="ir.actions.act_window">
+        <field name="name">Carrier Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">carrier.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_carrier_order_filter"/>
+        <field name="context">{}</field>
+        <field name="domain">[('status', 'not in', ('draft', 'cancel'))]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new quotation, the first step of a new order!
+            </p><p>
+                Once the quotation is confirmed, it becomes an order.<br/>
+            </p>
+        </field>
+    </record>
+
+
+
+
+    <!-- Add confirm and cancel options to action buttons -->
+
+    <record id="carrier_order_confirm_view" model="ir.ui.view">
+        <field name="name">carrier.order.confirm.form</field>
+        <field name="model">carrier.order.confirm</field>
+        <field name="arch" type="xml">
+            <form string="Confirm Carrier Orders">
+                <p class="oe_grey">
+                    Only quotations will be Confirmed.
+                    Other will get skipped.
+                </p>
+                <footer>
+                    <button string="Confirm" name="carrier_confirm" type="object" default_focus="1" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_carrier_confirm_multiple_orders" model="ir.actions.act_window">
+        <field name="name">Confirm and Post</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">carrier.order.confirm</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="carrier_order_confirm_view"/>
+        <field name="binding_model_id" ref="model_carrier_order" />
+    </record>
+
+    <!-- End of -->
+
+
+
+
+
+
+
+    <menuitem name="Carrier Orders" id="main_menu" web_icon="quatrix_carrier_orders,static/description/icon.jpg"/>
+
+    <!-- menu categories -->
+    <menuitem name="Quotations" id="quotations_menu" parent="main_menu" action="carrier_orders_menu_action"/>
+    <menuitem name="Orders" id="orders_menu" parent="main_menu" action="action_orders" />
+
+</odoo>

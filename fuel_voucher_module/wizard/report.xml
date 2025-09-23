@@ -1,0 +1,8 @@
+ <odoo>
+    <record id="report_partner_ledger" model="ir.actions.report">
+        <field name="name">Partner Fuel Ledger</field>
+        <field name="model">report.partner.ledger</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">fuel_voucher_module.report_partner_ledger_document</field>
+    </record>
+</odoo>

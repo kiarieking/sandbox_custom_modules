@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+        <template id="inherited_login_layout" inherit_id="web.login_layout" name="Quatrix Theme Login">
+            <xpath expr="//div[hasclass('pt-3')]" position="replace"> <!-- small mt-4 pt-3 border-top-->
+                <div class="text-center small mt-4 pt-3 border-top" >
+                    <a href="https://quatrixglobal.com">Quatrix Global</a>
+                        <span>| </span>
+                    <a  href="mailto:info@quatrixglobal.com">Email Us</a>
+                </div>
+            </xpath>
+        </template>
+
+        <!-- <template id="web_login_inherit" inherit_id="web.login"  name="Login">
+            <xpath expr="//button[hasclass('btn')]" position="replace"> btn-link btn-sm btn-block
+                <div class="text-center small mt-4 pt-3 border-top" >
+                    
+                </div>
+            </xpath>
+        </template> -->
+    </data>
+</odoo>

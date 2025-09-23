@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_dispatch_accounting_general_statement_wizard" model="ir.ui.view">
+        <field name="model">dispatch.general.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="date_start"/>
+                    </group>
+                    <group>
+                        <field name="date_end"/>
+                    </group>
+                    <group>
+                        <field name="partner_id" options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}'/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="get_values" string="Print Statement"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!--Menu Item-->
+
+    <!-- <act_window
+        id="action_dispatch_general_statement_wizard"
+        res_model="dispatch.general.wizard"
+        name="Revenue Cost"
+        view_mode="form"
+        target="new"
+    /> -->
+
+    <record id="action_dispatch_general_statement_wizard" model="ir.actions.act_window">
+        <field name="name">Revenue Cost</field>
+        <field name="res_model">dispatch.general.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <!-- <field name="view_id" ref=""/> -->
+        <field name="target">new</field>
+    </record>
+
+    <!-- Dispatch Report - Accounting Team -->
+    <menuitem
+        name="Revenue Cost"
+        id="general_dispatch_menu"
+        parent="account.menu_finance_reports"
+        action="action_dispatch_general_statement_wizard"
+        sequence="300"
+    />
+</odoo>

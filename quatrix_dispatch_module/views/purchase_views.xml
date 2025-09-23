@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_purchase_number_filter" model="ir.ui.view">
+        <field name="name">purchase.number.filter</field>
+        <field name="model">purchase.number</field>
+        <field name="arch" type="xml">
+            <search string="Search Purchase Numbers/Orders">
+                <field name="name" string="LPO" filter_domain="['|', '|', ('name', 'ilike', self), ('potype', 'ilike', self), ('partner_id', 'ilike', self)]"/>
+                
+                <!-- <field name="partner_id"/>
+                <field name="end_date"/>
+                <field name="status"/>
+                <field name="name"/>
+                <field name="potype"/> -->
+                <separator/>
+                  <filter string="Quotation" name="draft" domain="[('status','=','draft')]"/>
+                  <filter string="Purchase Order" name="order" domain="[('status','=','order')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="status" domain="[]" context="{'group_by':'status'}"/>
+                    <filter string="Customer" name="partner_id" domain="[]" context="{'group_by':'partner_id'}"/>
+                    <filter string="PO Number" name="name" domain="[]" context="{'group_by':'name'}"/>
+                </group>
+           </search>
+        </field>
+    </record>
+
+    <record id="purchase_number_tree" model="ir.ui.view">
+        <field name="name">purchase.number.tree</field>
+        <field name="model">purchase.number</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="status=='cancel'" multi_edit="1">
+                <field name="name_seq"/>
+                <field name="name"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="potype"/>
+                <field name="partner_id" options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}'/>
+                <field name="create_uid"/>
+                <field name="write_uid"/>
+                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="currency_id" invisible="1" />
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="purchase_number_form" model="ir.ui.view">
+            <field name="name">purchase.number.form</field>
+            <field name="model">purchase.number</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                      <button name="action_confirm" type="object" class="btn-primary" attrs="{'invisible': [('status','not in', 'draft')]}" string="Confirm Purchase Order" groups="base.group_user"/>
+                      <button name="action_update_dispatch_records" type="object" class="btn-primary" attrs="{'invisible': [('status','not in', 'draft')]}" string="Update Dispatch Records" groups="base.group_user"/>
+                      <button name="action_cancel" type="object" string="Cancel Purchase Order" attrs="{'invisible': [('status','in', ('draft', 'cancel'))]}" groups="base.group_user"/>
+                      <!-- <button name="action_post" type="object" attrs="{'invisible': [('status','not in', 'order')]}" class="btn-primary" string="Post" groups="base.group_user" /> -->
+                      <button name="action_reset" type="object" attrs="{'invisible': [('status','not in', 'cancel')]}" string="Reset to draft" groups="base.group_user" />
+                        <field name="status" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                     <div class="oe_title">
+                        <h1>
+                            <field name="name_seq" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group name="group_top">
+                        <group name="group_left">
+                            <field
+                                attrs="{'readonly': [('status', 'in', ('order','cancel', 'posted'))]}" 
+                                name="partner_id" widget="res_partner_many2one" 
+                                context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}" 
+                                options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}'
+                            />
+                            <!-- <field  attrs="{'readonly': [('status', 'in', ('order','cancel', 'posted'))]}" name="vehicle_id" options='{"always_reload": True}'/> -->
+                            <field name="name" />
+                        </group>
+                        <group name="group_right">
+                            <field name="potype" />
+                            <field name="start_date"  attrs="{'readonly': [('status', 'in', ('order','cancel', 'posted'))]}"/>
+                            <field name="end_date"  attrs="{'readonly': [('status', 'in', ('order','cancel', 'posted'))]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="order_lines" string="Orders">
+                            <field
+                                name="purchase_ids"
+                                widget="section_and_note_one2many"
+                                edit="true"
+                                attrs="{'readonly': [('status', 'in', ('order','cancel'))]}"
+                            >
+                                <tree create="true" delete="true" editable="bottom">
+                                    <field name="line"/>
+                                    <field 
+                                        name="product_id"
+                                        options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}'
+                                        domain="[('product_tmpl_id.partner_id', '=', parent.partner_id), ('is_active', '=', True)]"
+                                        />
+                                    
+                                    <field 
+                                        name="optional_product_id"
+                                        options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}'
+                                        domain="[('product_tmpl_id.partner_id', '=', parent.partner_id), ('is_active', '=', True)]"
+                                        />
+                                    <!-- <field name="name"/> -->
+                                    <field name="quantity"/>
+                                    <field name="trips_completed" readonly="1"/>
+                                    <field name="remaining_quantity" readonly="1"/>
+                                    <field name="price_unit"/>
+                                    <field name="amount_subtotal"/>
+                                </tree>
+                            </field>
+
+                             <group name="note_group" col="6">
+                                <group class="oe_subtotal_footer oe_right" colspan="2">
+                                    <field name="amount_total" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                    <!-- <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/> -->
+                                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                        <label for="amount_total" />
+                                    </div>
+                                    <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                    <field name="currency_id" invisible="1" />
+                                </group>
+                                <div class="oe_clear"/>
+                            </group>
+                        </page>
+                    </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_purchase_orders" model="ir.actions.act_window">
+            <field name="name">LPO Documents</field>
+            <field name="res_model">purchase.number</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[('status', 'in', ('cancel', 'order', 'draft', 'cancel'))]</field>
+            <field name="search_view_id" ref="view_purchase_number_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a LPO Document
+                </p><p>
+                    Creating an LPO quotation is the first step towards creating an LPO Order.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="EABL Dispatches" id="purchase_orders_menu" parent="dispatch_menu" sequence="7"/>
+        <menuitem name="Manage Customer LPO Records" id="purchase_orders_menu_documents" parent="purchase_orders_menu" action="action_purchase_orders" />
+</odoo>

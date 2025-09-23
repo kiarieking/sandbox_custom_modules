@@ -1,0 +1,161 @@
+<odoo>
+  <data>
+
+    <!-- Filter Inheritance -->
+    <record id="account_invoice_filter_inherit" model="ir.ui.view">
+      <field name="name">account.invoice.filter.inherit</field>
+      <field name="model">account.move</field>
+      <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+      <field name="arch" type="xml">
+        <!-- Add filter field -->
+
+        <filter name='due_date' position = "after">
+          <separator/>
+            <filter name = "customer" string="Customers" domain="[('partner_type', '=', 'Customer')]" />
+            <filter name = "vendor" string="Vendors" domain="[('partner_type', '=', 'Vendor')]" />
+          <separator/>
+        </filter>
+
+      </field>
+    </record>
+
+    <!-- Tree Inheritance -->
+    <record id="account_invoice_tree_inherit" model="ir.ui.view">
+      <field name="name">account.invoice.tree.inherit</field>
+      <field name="model">account.move</field>
+      <field name="inherit_id" ref="account.view_invoice_tree"/>
+      <field name="arch" type="xml">
+        <!-- Add tree field -->
+
+        <field name = "invoice_date" position = "before">
+          <field name = "partner_type" />
+        </field>
+
+      </field>
+    </record>
+
+    <!-- account.move (Journal Entry) -->
+
+    <record id="view_move_entries_tree_inherit" model="ir.ui.view">
+        <field name="name">account.move.entries.tree</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_tree"/>
+        <field name="arch" type="xml">
+          <xpath expr="//field[@name='partner_id']" position="after">
+            <field name="partner_ids" widget="many2many_tags" optional="show"/>
+          </xpath>
+        </field>
+    </record>
+
+    <!-- Form Inheritance -->
+     <record id="account_move_view_inherit" model="ir.ui.view">
+        <field name="name">account.view_move_form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+
+         <!-- Add Form Fields -->
+        <field name = "ref" position = "after">
+          <field
+            name = "certificate_number"
+            attrs="{'invisible':[('move_type', '!=', 'out_invoice')]}"
+          />
+        </field>
+
+        <field name = "partner_shipping_id" position = "after">
+          <field name = "partner_type" invisible="1"/>
+        </field>
+         <field name = "partner_shipping_id" position = "after">
+          <field name = "temp_field" invisible="1" />
+        </field>
+
+        <field name = "ref" position = "after">
+          <field name="invoice_upload" filename="file_name" attrs="{'invisible':[('move_type', '!=', 'in_invoice')]}" />
+          <field name="invoice_upload_link" readonly="1"  widget = "url" attrs = "{'invisible': [('invoice_upload_link', '=', False)]}" />
+        </field>
+
+         <field name = "ref" position = "after">
+          <field 
+            name = "customer_debits"
+            widget="many2many_tags"
+            domain="[('client_id', '=', partner_id), ('billing_client_state','=', 'pending')]"
+            attrs="{'invisible':[('move_type', '!=', 'out_invoice')]}"
+            options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}'
+          />
+        </field>
+
+        <!-- Add Line Fields -->
+         <xpath expr="/form/sheet/notebook/page/field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="before">
+            <field name="dates"/>
+        </xpath>
+
+          <xpath expr="/form/sheet/notebook/page/field[@name='line_ids']/tree/field[@name='product_id']" position="before">
+            <field name="dates"/>
+        </xpath>
+
+        <xpath expr="/form/sheet/notebook/page/field[@name='invoice_line_ids']/tree/field[@name='name']" position="after">
+            <field name="order_no" force_save="1"/>
+        </xpath>
+
+        <xpath expr="/form/sheet/notebook/page/field[@name='line_ids']/tree/field[@name='name']" position="after">
+            <field name="order_no" force_save="1"/>
+        </xpath>
+
+
+
+         <xpath expr="/form/sheet/notebook/page/field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="before">
+            <field name="notes"/>
+        </xpath>
+         <!-- <xpath expr="/form/sheet/notebook/page/field[@name='invoice_line_ids']/group/field[@name='amount_subtotal']" position="after">
+            <field name="deduction_amount_total"/>
+        </xpath> -->
+
+
+        <!-- Add Deduction Amount field -->
+        <field name="amount_by_group" position="after">
+          <field 
+            name="deduction_amount_total"
+            attrs="{'invisible':[('deduction_amount_total', '=', 0.0),('move_type','=','out_invoice')]}"
+          />
+        </field>
+
+        <field name="amount_untaxed" position="after">
+          <field 
+            name="customer_debit_amount"
+            attrs="{'invisible':[('customer_debit_amount', '=', 0.0), ('move_type','!=','out_invoice')]}"
+          />
+        </field>
+
+        <xpath expr="/form/sheet/notebook" position="inside">
+          <page name="order_line" string="Deductions" attrs="{'invisible':[('move_type','!=','in_invoice')]}">
+            <field
+              name="deduction_line_ids"
+              widget="section_and_note_one2many"
+              edit="true"
+              attrs="{'readonly': [('state', '=', 'posted')]}"
+            ><!--TODO:: 
+              domain="[('move_type','=','in_invoice')]"-->
+              <tree create="true" delete="true" editable="bottom">
+                <field name="date_deduction"/>
+                <field name="invoice_to_deduct" domain="[('move_type','=','out_invoice'),('state','=','posted'),('amount_residual', '>', 0), ('partner_id', '=', parent.partner_id)]"/>
+                <field name="description" />
+                <field name="amount_pending"/>
+                <field name="amount_to_deduct" />
+              </tree>
+            </field>
+            <group name="note_group" col="6">
+                <group class="oe_subtotal_footer oe_right" colspan="2">
+                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                        <label for="deduction_amount_total" />
+                    </div>
+                    <field name="deduction_amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    <field name="currency_id" invisible="1" />
+                </group>
+                <div class="oe_clear"/>
+            </group>
+          </page>
+        </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>

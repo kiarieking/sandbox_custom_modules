@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- <report
+            id="report_billing_order"
+            model="billing.order"
+            string="Quotation/Order"
+            report_type="qweb-pdf"
+            name="quatrix_billing_module.report_billing"
+            file="quatrix_billing_module.report_billing"
+            print_report_name="(object.status in ('draft') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+        /> -->
+        <record id="report_billing_order" model="ir.actions.report">
+            <field name="name">Quotation/Order</field>
+            <field name="model">billing.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">quatrix_billing_module.report_billing</field>
+            <field name="report_file">quatrix_billing_module.report_billing</field>
+            <!-- <field name="report_name">(object.status in ('draft') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)</field>  -->
+            <field name="binding_model_id" ref="model_billing_order"/>         
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

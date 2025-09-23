@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="tonnage_revenue_reports">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+
+                    <h2 class="mt16">
+                        <span >Tonnage Report</span>
+                    </h2>
+
+                    <div class="row mt32 mb32" id="informations">
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>From Date:</strong>
+                            <t t-esc="date_start" t-options='{"widget": "date"}'/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>To Date:</strong>
+                            <t t-esc="date_end" t-options='{"widget": "date"}' />
+                        </div>
+                    </div>
+
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <!-- <th name="th_description" class="text-right">Tonnage</th> -->
+                                    <th name="th_description" class="text-left">Customer</th>
+                                    <th name="th_description" class="text-left">MC</th>
+                                    <th name="th_description" class="text-left">1.5T</th>
+                                    <th name="th_description" class="text-left">3T</th>
+                                    <th name="th_description" class="text-left">5T</th>
+                                    <th name="th_description" class="text-left">7T</th>
+                                    <th name="th_description" class="text-left">10T</th>
+                                    <th name="th_description" class="text-left">14T</th>
+                                    <th name="th_description" class="text-left">28T</th>
+                                    <th name="th_description" class="text-right">Other</th>
+                                    <th name="th_description" class="text-right">Total</th>
+                                    <!-- <th name="th_priceunit" class="text-right">Cost</th>
+                                    <th name="th_priceunit" class="text-right">Margin</th>
+                                    <th name="th_priceunit" class="text-right">P(%)</th> -->
+                                </tr>
+                            </thead>
+
+                            <tbody class="sale_tbody">
+                                <t t-set="current_subtotal" t-value="0"/>
+                                <t t-foreach="order_ids" t-as="doc">
+                                    <tr>
+                                        <td name="td_name"><span t-esc="doc['partner_name']"/></td>
+
+                                        <t t-if="doc['MC']">
+                                            <td name="td_quantity" class="text-left">
+                                                <span t-esc="'{0:,.2f}'.format(float(doc['MC']))" />
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td name="td_quantity" class="text-left">-</td>
+                                        </t>
+
+                                        <t t-if="doc['1.5T']">
+                                            <td name="td_quantity" class="text-left">
+                                                <span t-esc="'{0:,.2f}'.format(float(doc['1.5T']))" />
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td name="td_quantity" class="text-left">-</td>
+                                        </t>
+
+                                        <t t-if="doc['3T']">
+                                            <td name="td_quantity" class="text-left">
+                                                <span t-esc="'{0:,.2f}'.format(float(doc['3T']))" />
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td name="td_quantity" class="text-left">-</td>
+                                        </t>
+
+                                        <t t-if="doc['5T']">
+                                            <td name="td_quantity" class="text-left">
+                                                <span t-esc="'{0:,.2f}'.format(float(doc['5T']))" />
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td name="td_quantity" class="text-left">-</td>
+                                        </t>
+
+                                        <t t-if="doc['7T']">
+                                            <td name="td_quantity" class="text-left">
+                                                <span t-esc="'{0:,.2f}'.format(float(doc['7T']))" />
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td name="td_quantity" class="text-left">-</td>
+                                        </t>
+
+                                        <t t-if="doc['10T']">
+                                            <td name="td_quantity" class="text-left">
+                                                <span t-esc="'{0:,.2f}'.format(float(doc['10T']))" />
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td name="td_quantity" class="text-left">-</td>
+                                        </t>
+
+                                        <t t-if="doc['14T']">
+                                            <td name="td_quantity" class="text-left">
+                                                <span t-esc="'{0:,.2f}'.format(float(doc['14T']))" />
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td name="td_quantity" class="text-left">-</td>
+                                        </t>
+
+                                        <t t-if="doc['28T']">
+                                            <td name="td_quantity" class="text-left">
+                                                <span t-esc="'{0:,.2f}'.format(float(doc['28T']))" />
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td name="td_quantity" class="text-left">-</td>
+                                        </t>
+
+                                         <t t-if="doc['other']">
+                                            <td name="td_quantity" class="text-right">
+                                                <span t-esc="'{0:,.2f}'.format(float(doc['other']))" />
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td name="td_quantity" class="text-right">-</td>
+                                        </t>
+
+                                        <td name="td_priceunit" class="text-right">
+                                            <span t-esc="'{0:,.2f}'.format(float(doc['total']))" />
+                                        </td>
+                                        <t t-set="current_section" t-value="line"/>
+                                        <t t-set="current_subtotal" t-value="0"/>       
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+
+                    <div class="clearfix" name="so_total_summary">
+                        <div id="total" class="row" name="total">
+                            <table class="table table-sm">
+                                <tr class="is-subtotal text-right">
+                                    <td name="td_section_subtotal" colspan="99">
+                                        <strong class="mr16">Total Revenue</strong>
+                                        <span t-esc="'{0:,.2f}'.format(float(total_revenue))" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

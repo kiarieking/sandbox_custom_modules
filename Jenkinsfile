@@ -20,7 +20,7 @@ pipeline{
 
                     . venv/bin/activate
 
-                    pip install -r requirements.txt
+                    pip install -r odoo_sandbox/requirements.txt
 
 
                 '''

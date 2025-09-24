@@ -38,11 +38,7 @@ pipeline{
 
                     pytest -q --tb=short odoo_sandbox/authentication
 
-                    echo "I'm here 2. installed dotenv manually. exited session"
-
-                    echo "this is the 8 test"
-
-                    echo "installed chrome and chromedriver on server"
+                   echo "Finished"
 
                 '''
             }

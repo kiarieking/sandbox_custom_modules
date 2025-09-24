@@ -42,6 +42,8 @@ pipeline{
 
                     echo "this is the 8 test"
 
+                    echo "installed chrome and chromedriver on server"
+
                 '''
             }
         }

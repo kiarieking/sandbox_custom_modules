@@ -36,7 +36,7 @@ pipeline{
                     
                     . venv/bin/activate
 
-                    pytest -q --tb=short authentication
+                    pytest -q --tb=short odoo_sandbox/authentication
 
                     echo "I'm here 2. installed dotenv manually. exited session"
 

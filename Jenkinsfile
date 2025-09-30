@@ -36,9 +36,9 @@ pipeline{
                     
                     . venv/bin/activate
 
-                    pytest -q --tb=short odoo_sandbox/authentication
+                    pytest -q --tb=short odoo_sandbox
 
-                   echo "Finished"
+                    echo "Finished"
 
                 '''
             }

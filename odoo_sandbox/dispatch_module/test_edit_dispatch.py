@@ -13,7 +13,7 @@ def test_create_dispatch(driver,login,dispatch_icon):
     login(EMAIL,PASSWORD)
     dispatch_icon()
     status = "Quotation"
-    dispatch_no = "DO10613"
+    dispatch_no = "DO10610"
     group_dispatch(driver)
     open_dispatch(driver,status,dispatch_no)
     start_editing_dispatch(driver)

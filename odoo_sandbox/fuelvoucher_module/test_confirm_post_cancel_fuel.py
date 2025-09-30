@@ -9,29 +9,29 @@ load_dotenv()
 EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
 
-# def test_confirm_voucher(driver,login,fuel_icon):
-#     login(EMAIL,PASSWORD)
-#     fuel_icon()
-#     group_vouchers(driver)
-#     status = "Quotation"
-#     voucher_no = "FO3930"
-#     open_voucher(driver,status,voucher_no)
-#     confirm_voucher(driver)
-
-def test_post_voucher(driver,login,fuel_icon):
+def test_confirm_voucher(driver,login,fuel_icon):
     login(EMAIL,PASSWORD)
     fuel_icon()
     group_vouchers(driver)
+    status = "Quotation"
+    voucher_no = "FO3918"
+    open_voucher(driver,status,voucher_no)
+    confirm_voucher(driver)
+
+def test_post_voucher(driver,login,fuel_icon):
+    # login(EMAIL,PASSWORD)
+    fuel_icon()
+    group_vouchers(driver)
     status = "Fuel Order"
-    voucher_no = "FO3930"
+    voucher_no = "FO3890"
     open_voucher(driver,status,voucher_no)
 
 def test_cancel_voucher(driver,login,fuel_icon):
-    login(EMAIL,PASSWORD)
+    # login(EMAIL,PASSWORD)
     fuel_icon()
     group_vouchers(driver)
     status = "Fuel Order"
-    voucher_no = "FO3930"
+    voucher_no = "FO3889"
     open_voucher(driver,status,voucher_no)
 
     

@@ -9,12 +9,12 @@ load_dotenv()
 EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
 
-def test_create_voucher(driver,login,fuel_icon):
+def test_edit_voucher(driver,login,fuel_icon):
     login(EMAIL,PASSWORD)
     fuel_icon()
     group_vouchers(driver)
     status = "Quotation"
-    voucher_no = "FO3930"
+    voucher_no = "FO3916"
     open_voucher(driver,status,voucher_no)
     edit_voucher(driver)
 

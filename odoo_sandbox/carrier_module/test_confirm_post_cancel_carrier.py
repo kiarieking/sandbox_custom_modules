@@ -21,7 +21,7 @@ def test_confirm_order(driver,login,carrier_icon):
 
 def test_post_order(driver,login,carrier_icon):
     status = "Order"
-    carrier_no = "CO12778"
+    carrier_no = "CO12825"
     carrier_icon()
     group_orders(driver)
     open_order(driver,status,carrier_no)

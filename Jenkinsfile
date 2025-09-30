@@ -53,7 +53,7 @@ pipeline{
                 status: "Build Status",
                 webhookUrl: "${MSTEAMS_HOOK}",
                 message: "Build successful"
-                color: "#00FF00",
+                color: "#00FF00"
             )
 
         }
@@ -62,7 +62,7 @@ pipeline{
                 status: "Build Status",
                 webhookUrl: "${MSTEAMS_HOOK}",
                 message: "Build failed"
-                color: "#FF0000 ",
+                color: "#FF0000 "
             )
 
         }

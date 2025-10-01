@@ -30,7 +30,7 @@ def test_post_dispatch(driver,login,dispatch_icon):
 
 def test_cancel_dispatch(driver, login, dispatch_icon):
     status = "Posted"
-    dispatch_no = "DO9991"
+    dispatch_no = "DO9990"
     # login(EMAIL,PASSWORD)
     dispatch_icon()
     group_dispatch(driver)

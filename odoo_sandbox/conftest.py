@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 import os
 import tempfile
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def driver():
     service = Service('/usr/bin/chromedriver')
     temp_profile = tempfile.mkdtemp()

@@ -19,7 +19,7 @@ def driver():
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument(f"--user-data-dir={temp_profile}")
-    driver = webdriver.Chrome(service=service)
+    driver = webdriver.Chrome(service=service,options=options)
     yield driver
     driver.quit()
     

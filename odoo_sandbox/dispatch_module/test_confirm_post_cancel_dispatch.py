@@ -4,11 +4,13 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+import pytest
 
 load_dotenv()
 EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
 
+@pytest.mark.order(3)
 def test_confirm_dispatch(driver,login,dispatch_icon):
     status = "Quotation"
     dispatch_no = "DO10635"
@@ -19,6 +21,7 @@ def test_confirm_dispatch(driver,login,dispatch_icon):
     complete_delivery(driver)
     time.sleep(3)
 
+@pytest.mark.order(4)
 def test_post_dispatch(driver,login,dispatch_icon):
     status = "Dispatch Order"
     dispatch_no = "DO9028"
@@ -28,9 +31,10 @@ def test_post_dispatch(driver,login,dispatch_icon):
     open_dispatch(driver,status,dispatch_no)
     post_dispatch(driver)
 
+@pytest.mark.order(5)
 def test_cancel_dispatch(driver, login, dispatch_icon):
     status = "Posted"
-    dispatch_no = "DO9990"
+    dispatch_no = "DO9991"
     # login(EMAIL,PASSWORD)
     dispatch_icon()
     group_dispatch(driver)

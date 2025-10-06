@@ -2,8 +2,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import time
+import pytest
 
-
+@pytest.mark.order(6)
 def test_create_carrier(login, driver, carrier_icon):
     email = "kelvin.kiarie@quatrixglobal.com"
     password = "$kingara120"
@@ -33,7 +34,7 @@ def group_orders(driver):
 def open_order(driver):
     quotation = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//th[@class='o_group_name' and contains(., 'Quotation')]")))
     quotation.click()
-    element = WebDriverWait(driver,100).until(EC.element_to_be_clickable((By.XPATH, "(.//*[normalize-space(text()) and normalize-space(.)='CO12808'])[1]/following::td[1]")))
+    element = WebDriverWait(driver,100).until(EC.element_to_be_clickable((By.XPATH, "(.//*[normalize-space(text()) and normalize-space(.)='CO12809'])[1]/following::td[1]")))
     element.click()
     
 

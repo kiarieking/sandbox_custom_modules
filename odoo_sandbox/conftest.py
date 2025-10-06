@@ -19,7 +19,7 @@ def driver():
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument(f"--user-data-dir={temp_profile}")
-    driver = webdriver.Chrome(service=service,options=options)
+    driver = webdriver.Chrome(service=service)
     yield driver
     driver.quit()
     
@@ -40,7 +40,8 @@ def dispatch_icon(driver):
     def _dispatch_icon():
         load_dotenv(".env.icons_base64img")
         icon_dispatch = os.getenv("DISPATCH")
-        burger = WebDriverWait(driver,60).until(EC.presence_of_element_located((By.XPATH,"(.//*[normalize-space(text()) and normalize-space(.)='Discuss'])[1]/preceding::a[1]")))
+        print(type(icon_dispatch))
+        burger = WebDriverWait(driver,60).until(EC.presence_of_element_located((By.XPATH, "(.//*[normalize-space(text()) and normalize-space(.)='Discuss'])[1]/preceding::a[1]")))
         burger.click()
         driver.find_element(By.XPATH, icon_dispatch).click()
     return _dispatch_icon

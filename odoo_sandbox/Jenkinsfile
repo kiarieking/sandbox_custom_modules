@@ -44,13 +44,23 @@ pipeline{
     }
     post{
         always{
-            echo "========always========"
+            echo "========Build done========"
         }
         success{
-            echo "========pipeline executed successfully ========"
+            office365ConnectorSend(
+                status: "Build Status",
+                webhookUrl: "${MSTEAMS_HOOK}",
+                message: "Build successful"
+                color: "#00FF00",
+            )
         }
         failure{
-            echo "========pipeline execution failed========"
+            office365ConnectorSend(
+                status: "Build Status",
+                webhookUrl: "${MSTEAMS_HOOK}",
+                message: "Build failed"
+                color: "#FF0000 ",
+            )
         }
     }
 }

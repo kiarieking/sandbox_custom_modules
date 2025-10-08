@@ -28,7 +28,7 @@ def login(driver):
     def _login(email,password):
         env_path = find_dotenv(".env")
         load_dotenv(env_path)
-        URL = os.getenv("URL")
+        URL = os.getenv("https://sandbox.erp.quatrixglobal.com/")
         driver.get(URL)
         
         driver.find_element(By.ID, "login").send_keys(email)

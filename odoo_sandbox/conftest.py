@@ -23,7 +23,7 @@ def driver():
     yield driver
     driver.quit()
     
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def login(driver):
     def _login(email,password):
         load_dotenv()

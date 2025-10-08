@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
-from dotenv import load_dotenv
+from dotenv import load_dotenv,find_dotenv
 import os
 import tempfile
 
@@ -38,7 +38,8 @@ def login(driver):
 @pytest.fixture
 def dispatch_icon(driver):
     def _dispatch_icon():
-        load_dotenv(".env.icons_base64img")
+        env_path = find_dotenv(".env.icons_base64img")
+        load_dotenv(env_path)
         icon_dispatch = os.getenv("DISPATCH")
         print(type(icon_dispatch))
         burger = WebDriverWait(driver,60).until(EC.presence_of_element_located((By.XPATH, "(.//*[normalize-space(text()) and normalize-space(.)='Discuss'])[1]/preceding::a[1]")))
@@ -50,7 +51,8 @@ def dispatch_icon(driver):
 @pytest.fixture
 def carrier_icon(driver):
     def _carrier_icon():
-        load_dotenv(".env.icons_base64img")
+        env_path = find_dotenv(".env.icons_base64img")
+        load_dotenv(env_path)
         icon_carrier = os.getenv("CARRIER")
         burger = WebDriverWait(driver,60).until(EC.presence_of_element_located((By.XPATH,"(.//*[normalize-space(text()) and normalize-space(.)='Discuss'])[1]/preceding::a[1]")))
         burger.click()
@@ -62,7 +64,8 @@ def carrier_icon(driver):
 @pytest.fixture
 def billing_icon(driver):
     def _billing_icon():
-        load_dotenv(".env.icons_base64img")
+        env_path = find_dotenv(".env.icons_base64img")
+        load_dotenv(env_path)
         icon_billing = os.getenv("BILLING")
         burger = WebDriverWait(driver,60).until(EC.presence_of_element_located((By.XPATH,"(.//*[normalize-space(text()) and normalize-space(.)='Discuss'])[1]/preceding::a[1]")))
         burger.click()
@@ -74,7 +77,8 @@ def billing_icon(driver):
 @pytest.fixture
 def fuel_icon(driver):
     def _fuel_icon():
-        load_dotenv(".env.icons_base64img")  
+        env_path = find_dotenv(".env.icons_base64img")
+        load_dotenv(env_path)  
         icon_fuel = os.getenv("FUEL")
         burger = WebDriverWait(driver,60).until(EC.presence_of_element_located((By.XPATH,"(.//*[normalize-space(text()) and normalize-space(.)='Discuss'])[1]/preceding::a[1]")))
         burger.click()

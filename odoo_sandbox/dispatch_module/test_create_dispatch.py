@@ -1,4 +1,4 @@
-from dotenv import load_dotenv
+from dotenv import load_dotenv,find_dotenv
 import os
 import time
 from selenium.webdriver.support.ui import WebDriverWait
@@ -6,7 +6,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import pytest
 
-load_dotenv()
+env_path = find_dotenv(".env")
+load_dotenv(env_path)
 EMAIL = os.getenv('EMAIL')
 PASSWORD = os.getenv('PASSWORD')
 

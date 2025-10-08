@@ -26,7 +26,8 @@ def driver():
 @pytest.fixture(scope="function")
 def login(driver):
     def _login(email,password):
-        load_dotenv()
+        env_path = find_dotenv(".env.icons_base64img")
+        load_dotenv(env_path)
         URL = os.getenv('URL')
         driver.get(URL)
         

@@ -28,7 +28,9 @@ def driver():
 def login(driver):
     def _login(email,password):
         load_dotenv()
-        URL = os.getenv('URL')
+        URL = os.getenv("URL", "").strip()
+        if not URL:
+            raise ValueError("Environment variable URL is not set or empty.")
         driver.get(URL)
 
         driver.find_element(By.ID, "login").send_keys(email)

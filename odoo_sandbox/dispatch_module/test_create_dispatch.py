@@ -1,20 +1,19 @@
-from dotenv import load_dotenv,find_dotenv
+from dotenv import load_dotenv
 import os
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import pytest
-from pathlib import Path
 
-env_path = Path(__file__).resolve().parent / ".env"
-load_dotenv(dotenv_path=env_path)
+load_dotenv()
 EMAIL = os.getenv('EMAIL')
 PASSWORD = os.getenv('PASSWORD')
 
 @pytest.mark.order(1)
 def test_create_dispatch(driver,login,dispatch_icon):
     login(EMAIL,PASSWORD)
+    time.sleep(3)
     dispatch_icon()
     open_new_dispatch(driver)
     add_shipper(driver)

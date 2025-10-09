@@ -26,8 +26,7 @@ def driver():
 @pytest.fixture(scope="function")
 def login(driver):
     def _login(email,password):
-        env_path = find_dotenv(".env")
-        load_dotenv(env_path)
+        load_dotenv(dotenv_path = "../.env")
         URL = os.getenv("URL")
         driver.get("https://sandbox.erp.quatrixglobal.com/")
         

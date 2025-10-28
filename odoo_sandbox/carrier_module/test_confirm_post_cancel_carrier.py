@@ -13,7 +13,7 @@ PASSWORD = os.getenv('PASSWORD')
 @pytest.mark.order(7)
 def test_confirm_order(driver,login,carrier_icon):
     status = "Quotation"
-    carrier_no = "CO12825"
+    carrier_no = "CO12826"
     login(EMAIL,PASSWORD)
     carrier_icon()
     group_orders(driver)
@@ -24,7 +24,7 @@ def test_confirm_order(driver,login,carrier_icon):
 @pytest.mark.order(8)
 def test_post_order(driver,login,carrier_icon):
     status = "Order"
-    carrier_no = "CO12778"
+    carrier_no = "CO12842"
     carrier_icon()
     group_orders(driver)
     open_order(driver,status,carrier_no)
@@ -34,7 +34,7 @@ def test_post_order(driver,login,carrier_icon):
 @pytest.mark.order(9)
 def test_cancel_order(driver,login,carrier_icon):
     status = "Posted"
-    carrier_no = "CO12753" 
+    carrier_no = "CO12739" 
     carrier_icon()
     group_orders(driver)
     open_order(driver,status,carrier_no)
@@ -44,7 +44,7 @@ def test_cancel_order(driver,login,carrier_icon):
 @pytest.mark.order(10)
 def test_reset_order(driver,carrier_icon):
     status = "Cancelled"
-    carrier_no = "CO12840"
+    carrier_no = "CO12800"
     carrier_icon()
     group_orders(driver)
     open_order(driver,status,carrier_no)

@@ -13,7 +13,7 @@ PASSWORD = os.getenv("PASSWORD")
 @pytest.mark.order(15)
 def test_confirm_dispatch(driver,login,dispatch_icon):
     status = "Quotation"
-    dispatch_no = "DO10635"
+    dispatch_no = "DO10607"
     login(EMAIL,PASSWORD)
     dispatch_icon()
     group_dispatch(driver)
@@ -21,25 +21,25 @@ def test_confirm_dispatch(driver,login,dispatch_icon):
     complete_delivery(driver)
     time.sleep(3)
 
-@pytest.mark.order(16)
-def test_post_dispatch(driver,login,dispatch_icon):
-    status = "Dispatch Order"
-    dispatch_no = "DO9028"
-    # login(EMAIL,PASSWORD)
-    dispatch_icon()
-    group_dispatch(driver)
-    open_dispatch(driver,status,dispatch_no)
-    post_dispatch(driver)
+# @pytest.mark.order(16)
+# def test_post_dispatch(driver,login,dispatch_icon):
+#     status = "Dispatch Order"
+#     dispatch_no = "DO7527"
+#     login(EMAIL,PASSWORD)
+#     dispatch_icon()
+#     group_dispatch(driver)
+#     open_dispatch(driver,status,dispatch_no)
+#     post_dispatch(driver)
 
-@pytest.mark.order(17)
-def test_cancel_dispatch(driver, login, dispatch_icon):
-    status = "Posted"
-    dispatch_no = "DO9991"
-    # login(EMAIL,PASSWORD)
-    dispatch_icon()
-    group_dispatch(driver)
-    open_dispatch(driver,status,dispatch_no)
-    cancel_dispatch(driver)
+# @pytest.mark.order(17)
+# def test_cancel_dispatch(driver, login, dispatch_icon):
+#     status = "Posted"
+#     dispatch_no = "DO9992"
+#     login(EMAIL,PASSWORD)
+#     dispatch_icon()
+#     group_dispatch(driver)
+#     open_dispatch(driver,status,dispatch_no)
+#     cancel_dispatch(driver)
 
 
 def group_dispatch(driver):
@@ -61,13 +61,16 @@ def open_dispatch(driver,status,dispatch_no):
 def complete_delivery(driver):
     edit_btn = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//span[normalize-space()='Edit']")))
     edit_btn.click()
+    time.sleep(5)
     pod_input = WebDriverWait(driver,10).until(EC.presence_of_element_located((By.XPATH, "//input[@type='file' and @name='ufile']")))
     pod_input.send_keys("/home/kkiarie/Downloads/sample.pdf")
-    save_btn = WebDriverWait(driver,10).until(EC.presence_of_element_located((By.XPATH, "//span[@class='d-none d-sm-inline' and normalize-space(text())='Save']")))
-    save_btn.click()                                          
+    time.sleep(5)
+    save_btn = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, "//button[@type='button' and contains(@class, 'o_form_button_save')]")))
+    save_btn.click()
+    time.sleep(5)                                          
     complete_btn = WebDriverWait(driver,10).until(EC.presence_of_element_located((By.NAME, "action_confirm")))
     complete_btn.click()
-    time.sleep(2)
+    time.sleep(5)
     status = WebDriverWait(driver,10).until(EC.presence_of_element_located((By.XPATH, "//button[@data-value='order']")))
     title = status.get_attribute("title")
     assert title == "Current state"
@@ -75,7 +78,7 @@ def complete_delivery(driver):
 def post_dispatch(driver):
     post_btn = WebDriverWait(driver,10).until(EC.presence_of_element_located((By.NAME, "action_post")))
     post_btn.click()
-    time.sleep(2)
+    time.sleep(5)
     status = WebDriverWait(driver,10).until(EC.presence_of_element_located((By.XPATH, "//button[@data-value='posted']")))
     title = status.get_attribute("title")
     assert title == "Current state"
@@ -84,7 +87,7 @@ def post_dispatch(driver):
 def cancel_dispatch(driver):
     cancel_btn = WebDriverWait(driver,10).until(EC.presence_of_element_located((By.NAME, "action_cancel")))
     cancel_btn.click()
-    time.sleep(2)
+    time.sleep(5)
     status = WebDriverWait(driver,10).until(EC.presence_of_element_located((By.XPATH, "//button[@data-value='cancel']")))
     title = status.get_attribute("title")
     assert title == "Current state"

@@ -16,7 +16,7 @@ def test_confirm_voucher(driver,login,fuel_icon):
     fuel_icon()
     group_vouchers(driver)
     status = "Quotation"
-    voucher_no = "FO3932"
+    voucher_no = "FO3926"
     open_voucher(driver,status,voucher_no)
     confirm_voucher(driver)
 

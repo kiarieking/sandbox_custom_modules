@@ -16,7 +16,7 @@ def test_edit_voucher(driver,login,fuel_icon):
     fuel_icon()
     group_vouchers(driver)
     status = "Quotation"
-    voucher_no = "FO3930"
+    voucher_no = "FO3917"
     open_voucher(driver,status,voucher_no)
     edit_voucher(driver)
 

@@ -36,7 +36,7 @@ pipeline{
                     
                     . venv/bin/activate
 
-                    pytest -q --tb=short odoo_sandbox/carrier_module
+                    pytest -q --tb=short odoo_sandbox/billing_module
 
                     echo "Finished"
 

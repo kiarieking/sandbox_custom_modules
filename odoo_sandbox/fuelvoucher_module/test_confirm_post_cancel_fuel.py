@@ -10,34 +10,35 @@ load_dotenv()
 EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
 
-@pytest.mark.order(3)
-def test_confirm_voucher(driver,login,fuel_icon):
-    login(EMAIL,PASSWORD)
-    fuel_icon()
-    group_vouchers(driver)
-    status = "Quotation"
-    voucher_no = "FO3926"
-    open_voucher(driver,status,voucher_no)
-    confirm_voucher(driver)
+# @pytest.mark.order(3)
+# def test_confirm_voucher(driver,login,fuel_icon):
+#     login(EMAIL,PASSWORD)
+#     fuel_icon()
+#     group_vouchers(driver)
+#     status = "Quotation"
+#     voucher_no = "FO3900"
+#     open_voucher(driver,status,voucher_no)
+#     confirm_voucher(driver)
 
 @pytest.mark.order(4)
 def test_post_voucher(driver,login,fuel_icon):
-    # login(EMAIL,PASSWORD)
+    login(EMAIL,PASSWORD)
     fuel_icon()
     group_vouchers(driver)
     status = "Fuel Order"
-    voucher_no = "FO3930"
+    voucher_no = "FO3911"
     open_voucher(driver,status,voucher_no)
+    post_voucher(driver)
 
 @pytest.mark.order(5)
 def test_cancel_voucher(driver,login,fuel_icon):
-    # login(EMAIL,PASSWORD)
+    login(EMAIL,PASSWORD)
     fuel_icon()
     group_vouchers(driver)
     status = "Fuel Order"
-    voucher_no = "FO3897"
+    voucher_no = "FO3737"
     open_voucher(driver,status,voucher_no)
-
+    cancel_voucher(driver)
     
 
 def group_vouchers(driver):
@@ -68,14 +69,10 @@ def confirm_voucher(driver):
         time.sleep(3)
 
 def post_voucher(driver):
-    fuelorder_grp = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//th[@class='o_group_name' and contains(text(), 'Fuel Order')]")))
-    fuelorder_grp.click()
-    fuel_order = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, '//td[@class="o_data_cell o_field_cell o_list_char o_readonly_modifier o_required_modifier" and text()="FO3325"]')))
-    fuel_order.click()
-    status = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//button[@data-value='order' and contains(@class, 'o_arrow_button') and text()[contains(., 'Fuel Order')]]")))
-    title = status.get_attribute('title')
+    status = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//button[@data-value='order' and normalize-space(text())='Fuel Order']")))
+    title = status.get_attribute("title")
     if(title == "Current state"):
-        post_btn = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "action_post")))
+        post_btn = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.NAME, "action_post")))
         post_btn.click()
         time.sleep(3)
     else:
@@ -83,12 +80,8 @@ def post_voucher(driver):
     time.sleep(5)
     
 def cancel_voucher(driver):
-        fuelorder_grp = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//th[@class='o_group_name' and contains(text(), 'Fuel Order')]")))
-        fuelorder_grp.click()
-        fuel_order = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, '//td[@class="o_data_cell o_field_cell o_list_char o_readonly_modifier o_required_modifier" and text()="FO3323"]')))
-        fuel_order.click()
-        status = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//button[@data-value='order' and contains(@class, 'o_arrow_button') and text()[contains(., 'Fuel Order')]]")))
-        title = status.get_attribute('title')
+        status = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//button[@data-value='order' and normalize-space(text())='Fuel Order']")))
+        title = status.get_attribute("title")
         if(title=="Current state"):
             cancel = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.NAME, "action_cancel")))
             cancel.click()

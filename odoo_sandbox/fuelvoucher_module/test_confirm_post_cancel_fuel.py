@@ -10,15 +10,15 @@ load_dotenv()
 EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
 
-# @pytest.mark.order(3)
-# def test_confirm_voucher(driver,login,fuel_icon):
-#     login(EMAIL,PASSWORD)
-#     fuel_icon()
-#     group_vouchers(driver)
-#     status = "Quotation"
-#     voucher_no = "FO3900"
-#     open_voucher(driver,status,voucher_no)
-#     confirm_voucher(driver)
+@pytest.mark.order(3)
+def test_confirm_voucher(driver,login,fuel_icon):
+    login(EMAIL,PASSWORD)
+    fuel_icon()
+    group_vouchers(driver)
+    status = "Quotation"
+    voucher_no = "FO3901"
+    open_voucher(driver,status,voucher_no)
+    confirm_voucher(driver)
 
 @pytest.mark.order(4)
 def test_post_voucher(driver,login,fuel_icon):
@@ -26,7 +26,7 @@ def test_post_voucher(driver,login,fuel_icon):
     fuel_icon()
     group_vouchers(driver)
     status = "Fuel Order"
-    voucher_no = "FO3911"
+    voucher_no = "FO3899"
     open_voucher(driver,status,voucher_no)
     post_voucher(driver)
 
@@ -36,7 +36,7 @@ def test_cancel_voucher(driver,login,fuel_icon):
     fuel_icon()
     group_vouchers(driver)
     status = "Fuel Order"
-    voucher_no = "FO3737"
+    voucher_no = "FO3914"
     open_voucher(driver,status,voucher_no)
     cancel_voucher(driver)
     

@@ -20,7 +20,7 @@ pipeline{
 
                     . venv/bin/activate
 
-                    pip install -r ./odoo_sandbox/requirements.txt
+                    
 
 
                 '''
@@ -36,7 +36,7 @@ pipeline{
                     
                     . venv/bin/activate
 
-                    pytest -q --tb=short odoo_sandbox/fuelvoucher_module
+                    pytest -q --tb=short odoo_sandbox/carrier_module
 
                     echo "Finished"
 

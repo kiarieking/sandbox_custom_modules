@@ -13,7 +13,7 @@ PASSWORD = os.getenv('PASSWORD')
 @pytest.mark.order(7)
 def test_confirm_order(driver,login,carrier_icon):
     status = "Quotation"
-    carrier_no = "CO12824"
+    carrier_no = "CO12840"
     login(EMAIL,PASSWORD)
     carrier_icon()
     group_orders(driver)

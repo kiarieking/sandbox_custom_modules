@@ -16,7 +16,7 @@ def test_confirm_voucher(driver,login,fuel_icon):
     fuel_icon()
     group_vouchers(driver)
     status = "Quotation"
-    voucher_no = "FO3901"
+    voucher_no = "FO3899"
     open_voucher(driver,status,voucher_no)
     confirm_voucher(driver)
 
@@ -26,7 +26,7 @@ def test_post_voucher(driver,login,fuel_icon):
     fuel_icon()
     group_vouchers(driver)
     status = "Fuel Order"
-    voucher_no = "FO3899"
+    voucher_no = "FO3897"
     open_voucher(driver,status,voucher_no)
     post_voucher(driver)
 
@@ -36,7 +36,7 @@ def test_cancel_voucher(driver,login,fuel_icon):
     fuel_icon()
     group_vouchers(driver)
     status = "Fuel Order"
-    voucher_no = "FO3914"
+    voucher_no = "FO3777"
     open_voucher(driver,status,voucher_no)
     cancel_voucher(driver)
     

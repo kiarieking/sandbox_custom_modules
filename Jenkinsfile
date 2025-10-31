@@ -36,7 +36,7 @@ pipeline{
                     
                     . venv/bin/activate
 
-                    pytest -q --tb=short odoo_sandbox
+                    pytest -q --tb=short odoo_sandbox/fuelvoucher_module
 
                     echo "Finished"
 

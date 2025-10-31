@@ -10,7 +10,6 @@ def test_create_carrier(login, driver, carrier_icon):
     password = "$kingara120"
     login(email,password)
     carrier_icon()
-
     group_orders(driver)
     open_order(driver)
     click_edit_button(driver)

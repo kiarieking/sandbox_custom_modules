@@ -13,7 +13,7 @@ PASSWORD = os.getenv("PASSWORD")
 @pytest.mark.order(15)
 def test_confirm_dispatch(driver,login,dispatch_icon):
     status = "Quotation"
-    dispatch_no = "DO10606"
+    dispatch_no = "DO10610"
     login(EMAIL,PASSWORD)
     dispatch_icon()
     group_dispatch(driver)
@@ -24,7 +24,7 @@ def test_confirm_dispatch(driver,login,dispatch_icon):
 @pytest.mark.order(16)
 def test_post_dispatch(driver,login,dispatch_icon):
     status = "Dispatch Order"
-    dispatch_no = "DO7528"
+    dispatch_no = "DO9030"
     login(EMAIL,PASSWORD)
     dispatch_icon()
     group_dispatch(driver)
@@ -34,7 +34,7 @@ def test_post_dispatch(driver,login,dispatch_icon):
 @pytest.mark.order(17)
 def test_cancel_dispatch(driver, login, dispatch_icon):
     status = "Posted"
-    dispatch_no = "DO9990"
+    dispatch_no = "DO9993"
     login(EMAIL,PASSWORD)
     dispatch_icon()
     group_dispatch(driver)

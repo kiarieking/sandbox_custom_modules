@@ -2,7 +2,7 @@
 {
     'name': "Fuel Management",
 
-    'summary': """Module to allow users to record fuel vouchers. Test change 2""",
+    'summary': """Module to allow users to record fuel vouchers. Test change 3""",
 
     'description': """Module to allow users to record fuel vouchers.""",
 

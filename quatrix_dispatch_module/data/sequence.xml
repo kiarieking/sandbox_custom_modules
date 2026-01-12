@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_quatrix_dispatch" model="ir.sequence">
+            <field name="name">Dispatch Order</field>
+            <field name="code">dispatch.order</field>
+            <field name="prefix">DO</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False" />
+        </record>
+    </data>
+</odoo>

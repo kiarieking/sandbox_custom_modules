@@ -1,0 +1,5 @@
+<odoo>
+    <menuitem name="Dispatch Reports" id="dispatch_reports_menu" parent="dispatch_menu" action="dispatch_menu_action" sequence="99"/>
+    
+    <!-- <menuitem name="Dispatch Orders" id="orders_menu" parent="non_lpo_menu" action="action_orders" /> -->
+</odoo>

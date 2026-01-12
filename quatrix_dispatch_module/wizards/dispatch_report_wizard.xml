@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_dispatch_general_statement_wizard" model="ir.ui.view">
+        <field name="model">dispatch.report.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="date_start"/>
+                    </group>
+                    <group>
+                        <field name="date_end"/>
+                    </group>
+                    <group>
+                        <field name="partner_id" options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}'/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="get_values" string="Print Statement"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!--Menu Item-->
+    <!-- <act_window
+        id="action_dispatch_report_wizard"
+        res_model="dispatch.report.wizard" 
+        name="Dispatch Report"
+        view_mode="form"
+        target="new"
+    /> -->
+
+    <record id="action_dispatch_report_wizard" model="ir.actions.act_window">
+        <field name="name">Dispatch Report</field>
+        <field name="res_model">dispatch.report.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <!-- <field name="view_id" ref=""/> -->
+        <field name="target">new</field>
+    </record>
+
+    <!--Actual Dispatch Report - For Dispatch Team Use-->
+    <menuitem
+        name="Dispatch Report"
+        id="report_dispatch_menu"
+        parent="quatrix_dispatch_module.dispatch_reports_menu"
+        action="action_dispatch_report_wizard"
+        sequence="200"
+    />
+</odoo>

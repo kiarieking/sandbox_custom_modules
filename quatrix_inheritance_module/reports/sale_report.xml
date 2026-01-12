@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <odoo>
+    <template id="report_saleorder_document_inherit" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//th[@name='th_description']" position="before">
+            <th name="th_date" class="text-left" style="font-size:14.5px">Date</th>
+            <th name="th_product" class="text-left" style="font-size:14.5px">Product</th>
+            <th name="th_delivery" class="text-left" style="font-size:14.5px">Delivery No.</th>
+       </xpath>
+       <xpath expr="//th[@name='th_description']" position="after">
+            <th name="th_line" class="text-left" style="font-size: 14.5px">Line</th>
+       </xpath>
+
+       <xpath expr="//td[@name='td_name']" position="before">
+            <td name="td_date" style="font-size:12.5px"><span t-field="line.date"/></td>
+            <td name="td_product" style="font-size:12.5px"><span t-field="line.product_id"/></td>
+            <td name="td_delivery" style="font-size:12.5px"><span t-field="line.order_no"/></td>
+       </xpath>
+       <xpath expr="//td[@name='td_name']" position="after">
+            <td name="td_line" class="text-left" style="font-size: 12.5px"><span t-field="line.notes"/></td>
+       </xpath>
+
+       <!-- Add font-size -->
+       <xpath expr="//th[@name='th_description']" position="attributes">
+            <attribute name="style">font-size:14.5px</attribute>
+       </xpath>
+       <xpath expr="//th[@name='th_quantity']" position="attributes">
+            <attribute name="style">font-size:14.5px</attribute>
+       </xpath>
+       <xpath expr="//th[@name='th_priceunit']" position="attributes">
+            <attribute name="t-if">False</attribute>
+            <attribute name="style">font-size:14.5px</attribute>
+       </xpath>
+       <xpath expr="//th[@name='th_discount']" position="attributes">
+            <attribute name="style">font-size:14.5px</attribute>
+       </xpath>
+       <xpath expr="//th[@name='th_taxes']" position="attributes">
+            <attribute name="t-if">False</attribute>
+            <attribute name="style">font-size:14.5px</attribute>
+       </xpath>
+       <xpath expr="//th[@name='th_subtotal']" position="attributes">
+            <attribute name="style">font-size:14.5px</attribute>
+       </xpath>
+
+       <xpath expr="//td[@name='td_name']" position="attributes">
+            <attribute name="style">font-size:12.5px</attribute>
+       </xpath>
+       <xpath expr="//td[@name='td_quantity']" position="attributes">
+            <attribute name="style">font-size:12.5px</attribute>
+       </xpath>
+       <xpath expr="//td[@name='td_quantity']/span[@t-field='line.product_uom']" position="attributes">
+            <attribute name="t-if">False</attribute>
+       </xpath>
+       <xpath expr="//td[@name='td_priceunit']" position="attributes">
+            <attribute name="t-if">False</attribute>
+            <attribute name="style">font-size:12.5px</attribute>
+       </xpath>
+       <xpath expr="//td[@t-if='display_discount']" position="attributes">
+            <attribute name="style">font-size:12.5px</attribute>
+       </xpath>
+       <xpath expr="//td[@name='td_taxes']" position="attributes">
+            <attribute name="t-if">False</attribute>
+            <attribute name="style">font-size:12.5px</attribute>
+       </xpath>
+       <xpath expr="//td[@name='td_subtotal']" position="attributes">
+            <attribute name="style">font-size:12.5px</attribute>
+       </xpath>
+    </template>
+</odoo>

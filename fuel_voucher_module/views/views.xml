@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_fuel_voucher_filter" model="ir.ui.view">
+        <field name="name">fuel.voucher.filter</field>
+        <field name="model">fuel.voucher</field>
+        <field name="arch" type="xml">
+            <search string="Vouchers">
+                <field name="name" string="Vouchers" 
+                    filter_domain="['|', '|', '|', '|', '|',('name', 'ilike', self), ('reference_number', 'ilike', self), ('order_ids.description','ilike',self),
+                    ('vehicle_id.license_plate', 'ilike', self), ('carrier_id','ilike',self), ('lpo_voucher_number', 'ilike', self)]"
+                />
+                <separator/>
+                  <filter string="Fuel Quotation" name="draft" domain="[('status','=','draft')]"/>
+                  <filter string="Fuel Order" name="order" domain="[('status','=','order')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <field name="date"/>
+                    <filter string="Status" name="status" domain="[]" context="{'group_by':'status'}"/>
+                    <filter string="Carrier" name="carrier_id" domain="[]" context="{'group_by':'carrier_id'}"/>
+                </group>
+           </search>
+        </field>
+    </record>
+
+    <record id="fuel_voucher_tree" model="ir.ui.view">
+        <field name="name">fuel.voucher.tree</field>
+        <field name="model">fuel.voucher</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="status=='cancel'" multi_edit="1">
+                <field name="name"/>
+                <field name="date" readonly="1"/>
+                <field name="carrier_id" readonly="1"/>
+                <field name="vehicle_id" readonly="1"/>
+                <field name="reference_number" readonly="1"/>
+                <!-- <field name="invoice_number" readonly="1"/> -->
+                <!-- <field name="lpo_voucher_number"/> -->
+                <field name="create_date"/>
+                <field name="create_uid"/>
+                <field name="write_date"/>
+                <field name="write_uid"/>
+                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="currency_id" invisible="1" />
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="fuel_voucher_form" model="ir.ui.view">
+            <field name="name">fuel.voucher.form</field>
+            <field name="model">fuel.voucher</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                      <button name="action_confirm" type="object" attrs="{'invisible': [('status','not in', 'draft')]}" class="btn-primary" string="Confirm" groups="base.group_user"/>
+                      <button name="action_cancel" type="object" string="Cancel" attrs="{'invisible': [('status','in', 'posted')]}" groups="base.group_user"/>
+                      <button name="action_post" type="object" attrs="{'invisible': [('status','not in', 'order')]}" class="btn-primary" string="Post" groups="base.group_user" />
+                      <button name="action_reset" type="object" attrs="{'invisible': [('status','not in', ('order', 'cancel'))]}" string="Reset to draft" groups="base.group_user" />
+                        <field name="status" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                     <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group name="group_top">
+                        <group name="group_left">  
+                            <field  attrs="{'readonly': [('status', 'in', ('order','cancel', 'posted'))]}" name="vehicle_id" filter_by="license_plate" options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}'/>
+                            <field name="reference_number"  attrs="{'readonly': [('status', 'in', ('draft','order','cancel', 'posted'))]}"/>
+                            <field name="lpo_voucher_number"  attrs="{'readonly': [('status', 'in', ('order','cancel', 'posted'))]}" />
+                            <field name="driver_phone_number"  attrs="{'readonly': [('status', 'in', ('order','cancel', 'posted'))]}"/>
+                        </group>
+                        <group name="group_right">
+                            <field  attrs="{'readonly': [('status', 'in', ('order','cancel', 'posted'))]}" name="date" />
+                            <field  readonly="1" name="carrier_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'supplier', 'show_address': 1, 'show_vat': True}" options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}'/>
+                            <field name="invoice_number" readonly="1"/>
+                            <!-- <field name="fuel_log_id" readonly="1"/> -->
+                            
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="order_lines" string="Orders">
+                            <field
+                                name="order_ids"
+                                widget="section_and_note_one2many"
+                                edit="true"
+                                attrs="{'readonly': [('status', 'in', ('order','cancel', 'posted'))]}"
+                            >
+                                <tree create="true" delete="true" editable="bottom">
+                                    <field 
+                                        name="product_id"
+                                        options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}'
+                                    />
+                                    <field name="description"/>
+                                    <field name="narration"/>
+                                    <field name="quantity"/>
+                                    <field name="price_unit"/>
+                                    <field name="amount_subtotal"/>
+                                </tree>
+                            </field>
+
+                             <group name="note_group" col="6">
+                                <group class="oe_subtotal_footer oe_right" colspan="2">
+                                    <field name="amount_total" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                        <label for="amount_total" />
+                                    </div>
+                                    <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                    <field name="currency_id" invisible="1" />
+                                </group>
+                                <div class="oe_clear"/>
+                            </group>
+                        </page>
+                    </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="fuel_menu_action" model="ir.actions.act_window">
+            <field name="name">Fuel Quotations</field>
+            <field name="res_model">fuel.voucher</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="view_fuel_voucher_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new fuel quotation
+                </p><p>
+                    You must define a product for everything you fuel,
+                    whether it's a storable product, a consumable or a service.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_orders" model="ir.actions.act_window">
+            <field name="name">Fuel Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fuel.voucher</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_fuel_voucher_filter"/>
+            <field name="context">{}</field>
+            <field name="domain">[('status', 'not in', ('draft', 'cancel'))]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new quotation, the first step of a new fuel order!
+                </p><p>
+                    Once the quotation is confirmed, it becomes a fuel order.<br/>
+                </p>
+            </field>
+        </record>
+
+
+
+
+            <!-- Add confirm and cancel options to action buttons -->
+
+    <record id="fuel_voucher_confirm_view" model="ir.ui.view">
+        <field name="name">fuel.voucher.confirm.form</field>
+        <field name="model">fuel.voucher.confirm</field>
+        <field name="arch" type="xml">
+            <form string="Confirm Fuel Orders">
+                <p class="oe_grey">
+                    Only quotations will be Confirmed.
+                    Other will get skipped.
+                </p>
+                <footer>
+                    <button string="Confirm" name="fuel_confirm" type="object" default_focus="1" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_fuel_voucher_confirm_multiple_orders" model="ir.actions.act_window">
+        <field name="name">Confirm Fuel Vouchers</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">fuel.voucher.confirm</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="fuel_voucher_confirm_view"/>
+        <field name="binding_model_id" ref="model_fuel_voucher" />
+    </record>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- Top menu item -->
+        <menuitem name="Fuel Management" id="fuel_voucher_menu" web_icon="fuel_voucher_module,static/description/icon.png"/>
+
+        <!-- menu categories -->
+        <menuitem name="Fuel Quotations" id="quotations_menu" parent="fuel_voucher_menu" action="fuel_menu_action"/>
+        <menuitem name="Fuel Orders" id="orders_menu" parent="fuel_voucher_menu" action="action_orders" />
+        <menuitem name="Fuel Reports" id="fuel_reports_menu" parent="fuel_voucher_menu" />
+</odoo>

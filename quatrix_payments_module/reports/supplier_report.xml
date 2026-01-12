@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="supplier_report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+
+                    <h2 class="mt16">
+                        <span >Supplier Expense Statement</span>
+                    </h2>
+
+                    <div class="row mt32 mb32" id="informations">
+                        <div t-if="date_start" class="col-auto mw-100 mb-2">
+                            <strong>From Date:</strong>
+                            <t t-esc="date_start" t-options='{"widget": "date"}'/>
+                        </div>
+                        <div t-if="date_end" class="col-auto mw-100 mb-2">
+                            <strong>To Date:</strong>
+                            <t t-esc="date_end" t-options='{"widget": "date"}' />
+                        </div>
+                    </div>
+
+                    <table class="table table-sm o_main_table">
+                        <thead>
+                            <tr>
+                                <th name="th_description" class="text-left">Date</th>
+                                <th name="th_description" class="text-left">Supplier</th>
+                                <th name="th_description" class="text-left">Reference</th>
+                                <!-- <th name="th_description" class="text-right">State</th> -->
+                                <th name="th_priceunit" class="text-right">Untaxed Amount</th>
+                                <th name="th_priceunit" class="text-right">Amount Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="sale_tbody">
+                            <t t-set="current_subtotal" t-value="0"/>
+
+                            <t t-foreach="order_ids" t-as="doc">
+                                <tr>
+                                    <td name="td_name"><span t-esc="doc['date']"/></td>
+                                    <td name="td_name"><span t-esc="doc['partner_id']"/></td>
+                                     <td name="td_name"><span t-esc="doc['name']"/></td>
+                                    <!-- <td name="td_name"><span t-esc="doc['state']"/></td> -->
+                                        <!-- <span t-esc="'{0:,.2f}'.format(float(doc['state']))" /> -->
+                                    
+                                    <td name="td_priceunit" class="text-right">
+                                        <span t-esc="'{0:,.2f}'.format(float(doc['amount_untaxed']))" />
+                                    </td>
+                                    <td name="td_priceunit" class="text-right">
+                                        <span t-esc="'{0:,.2f}'.format(float(doc['amount_total']))" />
+                                    </td>
+                                    <t t-set="current_section" t-value="line"/>
+                                    <t t-set="current_subtotal" t-value="0"/>       
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <div class="clearfix" name="so_total_summary">
+                        <div id="total" class="row" name="total">
+                            <table class="table table-sm">
+                                <tr class="is-subtotal text-right">
+                                    <td name="td_section_subtotal" colspan="99">
+                                        <strong class="mr16">Total Paid Out (Untaxed)</strong>
+                                        <span t-esc="'{0:,.2f}'.format(float(untaxed_amount_total))" />
+                                        <!-- <span
+                                            t-esc="doc.total_amount"
+                                            t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
+                                        /> -->
+                                    </td>
+                                </tr>
+
+                                <tr class="is-subtotal text-right">
+                                    <td name="td_section_subtotal" colspan="99">
+                                        <strong class="mr16">Total Paid Out</strong>
+                                        <span t-esc="'{0:,.2f}'.format(float(amount_total))" />
+                                        <!-- <span
+                                            t-esc="doc.total_cost"
+                                            t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
+                                        /> -->
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

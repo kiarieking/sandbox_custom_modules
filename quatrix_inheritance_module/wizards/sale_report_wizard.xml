@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_accounting_revenue_cost_wizard" model="ir.ui.view">
+        <field name="model">sale.uninvoiced.report.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="date_start"/>
+                    </group>
+                    <group>
+                        <field name="date_end"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="get_values" string="Print Statement"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!--Menu Item-->
+
+    <!-- <act_window
+        id="action_sale_uninvoiced_report_wizard"
+        res_model="sale.uninvoiced.report.wizard"
+        name="Uninvoiced Sales Report"
+        view_mode="form"
+        target="new"
+    /> -->
+
+    <record id="action_sale_uninvoiced_report_wizard" model="ir.actions.act_window">
+        <field name="name">Uninvoiced Sales Report</field>
+        <field name="res_model">sale.uninvoiced.report.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <!-- <field name="view_id" ref=""/> -->
+        <field name="target">new</field>
+    </record>
+
+    <menuitem 
+        name="Uninvoiced Sales Report"
+        id="account_sale_uninvoiced_report_wizard_menu"
+        parent="account.menu_finance_reports"
+        action="action_sale_uninvoiced_report_wizard"
+        sequence="250"
+    />
+
+</odoo>

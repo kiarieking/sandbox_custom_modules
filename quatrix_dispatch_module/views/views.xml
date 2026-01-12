@@ -1,0 +1,20 @@
+<odoo>
+  <data>
+
+    <record id="dispatch_menu_action" model="ir.actions.act_window">
+      <field name="name">New Dispatch Quotation</field>
+      <field name="res_model">quatrix.dispatch</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="view_mode">form</field>
+      <field name="context">{}</field>
+    </record>
+
+    <!-- Top menu item -->
+
+    <menuitem name="Dispatch" id="dispatch_menu"/>
+
+    <!-- menu categories -->
+    <menuitem name="Quotations" id="quotations_menu" parent="dispatch_menu" action="dispatch_menu_action"/>
+    <menuitem name="Confirmed" id="confirmed_menu" parent="dispatch_menu"/>
+</data>
+</odoo>

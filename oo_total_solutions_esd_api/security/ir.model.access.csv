@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_hscodes_master,access_hscodes_master_user,model_product_hscode,,1,1,1,1
+access_res_esd_config,access_res_esd_config_user,model_res_esd_config,,1,1,1,1

@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- account.move inherit form view -->
+    <record id="oo_esd_view_move_form" model="ir.ui.view">
+        <field name="name">account.move.inherit.view.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button string="Sign Invoice to KRA" name="action_sign_invoice" type="object" class="oe_secondary" 
+                attrs="{'invisible': [('move_type', 'not in', ['out_invoice', 'out_refund']),('esd_signature', '!=', False), ('state', 'not in', ('open', 'in_payment', 'paid'))]}"
+             confirm="This invoice will automatically be filed to KRA after this operation. Are you sure?" />
+            </xpath>
+            
+            <xpath expr="//field[@name='currency_id']" position="after">
+                <field name="use_manual_fx"/>
+                <field name="manual_rate" attrs="{'invisible': [('use_manual_fx', '=', False)],
+                 'required': [('use_manual_fx', '=', True)], 'readonly': [('state', '=', 'posted')]}"/>
+                <field name="is_export"/>
+                <field name="export_hscode_id" attrs="{'invisible': [('is_export', '=', False)],
+                 'required': [('is_export', '=', True)], 'readonly': [('state', '=', 'posted')]}"/>
+            </xpath>
+
+            <xpath expr="//group[@id='other_tab_group']" position="inside">
+                <group name="kra_invoice" string="KRA Invoice">
+                    <field name="esd_currency_id" invisible="1"/>
+                    <field name="esd_date_signed" attrs="{'invisible': [('move_type', 'not in', ('out_refund', 'out_invoice'))]}"/>
+                    <field name="esd_total_signed" attrs="{'invisible': [('move_type', 'not in', ('out_refund', 'out_invoice'))]}" widget="monetary" options="{'currency_field': 'esd_currency_id'}"/>
+                    <field name="esd_signature" attrs="{'invisible': [('move_type', 'not in', ('out_refund', 'out_invoice'))]}"/>
+                    <field name="esd_qr_code" widget='image' class="oe_avatar" attrs="{'invisible': [('move_type', 'not in', ('out_refund', 'out_invoice'))]}"/>
+                    <field name="esd_device_serial" attrs="{'invisible': [('move_type', 'not in', ('out_refund', 'out_invoice'))]}"/>
+                </group>
+            </xpath>
+
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='name']" position="after">
+                <field name="hscode_id" optional="hide" invisible="1" />
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="after">
+                <field name="price_unit_kes" optional="hide" invisible="1" />
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_subtotal']" position="after">
+                <field name="price_subtotal_kes" optional="hide" invisible="1" groups="account.group_show_line_subtotals_tax_excluded"/>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_total']" position="after">
+                <field name="price_total_kes" optional="hide" invisible="1" groups="account.group_show_line_subtotals_tax_included"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="oo_esd_view_tax_form" model="ir.ui.view">
+        <field name="name">account.tax.inherit.view.form</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_tax_form"/>
+        <field name="arch" type="xml">
+
+            <field name="type_tax_use" position="after">
+                <field name="esd_tax_band"/>
+            </field>
+
+        </field>
+    </record>
+
+    <record id="oo_esd_view_invoice_tree" model="ir.ui.view">
+        <field name="name">account.move.inherit.view.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <field name="move_type" position="after">
+                <field name="esd_date_signed" optional="show" invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund','out_receipt')"/>
+                <field name="esd_total_signed" optional="show" invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund','out_receipt')"/>
+                <field name="esd_signature" optional="show" invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund','out_receipt')"/>
+                <field name="esd_device_serial" optional="show" invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund','out_receipt')"/>
+            </field>
+        </field>
+    </record>
+</odoo>

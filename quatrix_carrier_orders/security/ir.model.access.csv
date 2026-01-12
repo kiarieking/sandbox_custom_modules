@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_carrier_order_carrier_order,carrier_order.carrier_orders,model_carrier_order,base.group_user,1,1,1,1
+access_carrier_order_confirm,access_carrier_order_confirm,model_carrier_order_confirm,base.group_user,1,1,1,0

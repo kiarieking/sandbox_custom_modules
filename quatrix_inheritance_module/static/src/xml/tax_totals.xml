@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <div t-name="quatrix_inheritance_module.TaxTotalsField" t-inherit="account.TaxTotalsField" t-inherit-mode="extension">
+        <xpath expr="//t[@t-foreach='totals.value.subtotals']" position="before">
+            <t t-foreach="totals.value.generics" t-as="g" t-key="g['name']">
+                <tr>
+                    <t t-if="g['amount'] > 0">
+                        <td class="o_td_label">
+                            <label class="o_form_label o_tax_total_label" t-esc="g['name']"/>
+                        </td>
+
+                        <td>
+                            <span t-att-name="g['name']" style="white-space: nowrap; font-weight: bold;" t-esc="g['formatted_amount']"/>
+                        </td>
+                    </t>
+                </tr>
+            </t>
+        </xpath>
+    </div>
+</templates>

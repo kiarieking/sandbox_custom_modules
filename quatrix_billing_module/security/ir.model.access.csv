@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_billing_order_user,billing.order.user,model_billing_order,base.group_user,1,1,1,1
+access_billing_order_user,billing.order.line.user,model_billing_order_line,base.group_user,1,1,1,1
+access_partner_billing_wizard,access_partner_billing_wizard,model_partner_billing_wizard,base.group_user,1,1,1,0

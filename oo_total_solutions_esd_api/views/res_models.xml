@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- res.partner inherit form view -->
+    <record id="oo_view_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.inherit.view.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='vat']" position="before">
+                <field name="tax_exemption" placeholder="Insert Tax Exemption Certificate Number"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- res.company inherit form view -->
+    <record id="oo_esd_view_company_form" model="ir.ui.view">
+        <field name="name">res.company.inherit.view.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//notebook[1]" position="inside">
+                <page name="esd" string="ESD Configuration">
+                    <group>
+                        <group>
+                            <field name="esd_enable"/>
+                        </group>
+                        <group string="ESD Configuration" attrs="{'invisible':[('esd_enable', '=', False)]}"
+                               style="width: 100%">
+                            <field name="esd_config_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget='handle'/>
+                                    <field name="conn_type"/>
+                                    <field name="esd_server_url"/>
+                                    <field name="esd_ip"
+                                           attrs="{'required': [('conn_type', '=', '1')],'readonly': [('conn_type', '=', '0')]}"/>
+                                    <field name="esd_port"
+                                           attrs="{'required': [('conn_type', '=', '1')],'readonly': [('conn_type', '=', '0')]}"/>
+                                    <field name="esd_password"
+                                           attrs="{'required': [('conn_type', '=', '1')],'readonly': [('conn_type', '=', '0')]}"/>
+                                    <field name="esd_com"
+                                           attrs="{'required': [('conn_type', '=', '0')],'readonly': [('conn_type', '=', '1')]}"/>
+                                    <field name="esd_baud"
+                                           attrs="{'required': [('conn_type', '=', '0')],'readonly': [('conn_type', '=', '1')]}"/>
+                                    <field name="esd_device_serial"/>
+                                    <field name="is_last_active"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group/>
+                    </group>
+                    <button string="Test Connection" name="check_device_connection" type="object"
+                            attrs="{'invisible':[('esd_enable', '=', False)]}"/>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

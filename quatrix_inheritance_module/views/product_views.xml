@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+        <record id="product_template_form_view_inherit" model ="ir.ui.view">
+            <field name="name">product.template.inherit.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='type']" position="before">
+                    <field name="is_active" widget = "boolean_button" options = '{"terminology": "Active Product"}' />
+                </xpath>
+                   <xpath expr="//field[@name='type']" position="before">
+                    <field name="is_inventory" widget = "boolean_button" options = '{"terminology": "Inventory Product"}' />
+                </xpath>
+                <xpath expr="//field[@name='categ_id']" position="before">
+                    <field 
+                        name="partner_id"
+                        options='{"always_reload": True, "no_open": True,"no_create": 1, "no_create_edit": 1}'
+                    />
+                </xpath>
+                <xpath expr="//field[@name='taxes_id']" position="before">
+                    <field name="core_shipper_id" />
+                </xpath>
+                <xpath expr="//field[@name='taxes_id']" position="before">
+                    <field name="core_product_id" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

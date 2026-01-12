@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="accounting_revenue_cost_report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+
+                    <h2 class="mt16">
+                        <span >Accounting Revenue Cost Report </span>
+                    </h2>
+
+                    <div class="row mt32 mb32" id="informations">
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>From Date:</strong>
+                            <t t-esc="date_start" t-options='{"widget": "date"}'/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>To Date:</strong>
+                            <t t-esc="date_end" t-options='{"widget": "date"}' />
+                        </div>
+                    </div>
+
+
+                    <table class="table table-sm o_main_table">
+                        <thead>
+                            <tr>
+                                <th name="th_description" class="text-left">Date</th>
+                                <th name="th_description" class="text-left">Partner</th>
+                                <!-- <th name="th_description" class="text-left">Vehicle</th> -->
+                                <th name="th_description" class="text-left">Route</th>
+                                <th name="th_description" class="text-left">Price</th>
+                                <th name="th_quantity" class="text-left">Qty</th>
+                                <th name="th_priceunit" class="text-right">Cost</th>
+                                <th name="th_priceunit" class="text-right">Margin</th>
+                                <th name="th_priceunit" class="text-right">(%)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="sale_tbody">
+                            <t t-set="current_subtotal" t-value="0"/>
+                            <t t-foreach="order_ids" t-as="doc">
+                                <tr>
+                                    <td name="td_name"><span t-esc="doc['date']"/></td>
+                                    <td name="td_name"><span t-esc="doc['partner']"/></td>
+                                    <td name="td_name"><span t-esc="doc['product']"/></td>
+                                    <td name="td_quantity" class="text-right">
+                                        <span t-esc="'{0:,.2f}'.format(float(doc['amount_cost']))" />
+                                    </td>
+                                    <td name="td_quantity" class="text-right">
+                                        <span t-esc="'{0:,.2f}'.format(float(doc['quantity']))" />
+                                    </td>
+                                    <td name="td_priceunit" class="text-right">
+                                        <span t-esc="'{0:,.2f}'.format(float(doc['carrier_cost']))" />
+                                    </td>
+                                    <td name="td_priceunit" class="text-right">
+                                        <span t-esc="'{0:,.2f}'.format(float(doc['margin']))" />
+                                    </td>
+                                    <td name="td_priceunit" class="text-right">
+                                        <span t-esc="'{0:,.2f}'.format(float(doc['margin_percentage']))" />
+                                    </td>
+                                    <t t-set="current_section" t-value="line"/>
+                                    <t t-set="current_subtotal" t-value="0"/>       
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+
+                    <div class="clearfix" name="so_total_summary">
+                        <div id="total" class="row" name="total">
+                            <table class="table table-sm">
+                                <tr class="is-subtotal text-right">
+                                    <td name="td_section_subtotal" colspan="99">
+                                        <strong class="mr16">Total Revenue</strong>
+                                        <span t-esc="'{0:,.2f}'.format(float(total_amount))" />
+                                    </td>
+                                </tr>
+
+                                <tr class="is-subtotal text-right">
+                                    <td name="td_section_subtotal" colspan="99">
+                                        <strong class="mr16">Total Revenue Cost</strong>
+                                        <span t-esc="'{0:,.2f}'.format(float(total_cost))" />
+                                    </td>
+                                </tr>
+
+                                <tr class="is-subtotal text-right">
+                                    <td name="td_section_subtotal" colspan="99">
+                                        <strong class="mr16">Total Net Profit</strong>
+                                        <span t-esc="'{0:,.2f}'.format(float(total_margin))" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_partner_ledger_document">
+    <t t-call="web.html_container">
+        <t t-call="web.external_layout">
+             <!-- <t t-foreach="docs" t-as="doc"> -->
+                <div class="page">
+                    <div class="oe_structure"/>
+
+                    <h6 class="text-left">
+                        <strong> <span > Fuel Ledger </span></strong>
+                    </h6>
+
+                    <div class="row mt32 mb32" id="informations">
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Start Date:</strong>
+                            <t t-esc="date_start" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>End Date:</strong>
+                            <t t-esc="date_end" />
+                        </div>
+
+                        <div t-if="carrier" class="col-auto mw-100 mb-2">
+                            <strong>Carrier:</strong>
+                            <t t-esc="carrier" />
+                        </div>
+
+                        <div t-if="total_quantity" class="col-auto mw-100 mb-2">
+                            <strong>Total Quantity:</strong>
+                            <t t-esc="total_quantity" />
+                        </div>
+                    </div>
+
+                        <table class="table table-sm o_main_table">
+                        <thead>
+                            <tr>
+                                <th name="th_description" class="text-left">Date</th>
+                                <th name="th_description" class="text-left">Vehicle</th>
+                                <th name="th_description" class="text-left">Product</th>
+                                <th name="th_description" class="text-left">Reference</th>
+                                <!-- <th name="th_description" class="text-left">Description</th> -->
+                                <!-- <th name="th_description" class="text-left">Narration</th> -->
+                                <th name="th_quantity" class="text-right">Quantity</th>
+                                <th name="th_priceunit" class="text-right">Unit Price</th>
+                            </tr>
+                        </thead>
+                        <tbody class="sale_tbody">
+                            <t t-set="current_subtotal" t-value="0"/>
+
+                            <t t-foreach="order_ids" t-as="doc">
+                                <tr>
+                                    <td name="td_name"><span t-esc="doc['date']"/></td>
+                                    <td name="td_name"><span t-esc="doc['vehicle']"/></td>
+                                    <td name="td_name"><span t-esc="doc['product']"/></td>
+                                    <td name="td_name"><span t-esc="doc['reference']"/></td>
+                                    <!-- <td name="td_name"><span t-esc="doc['description']"/></td> -->
+                                    <!-- <td name="td_name"><span t-esc="doc['narration']"/></td> -->
+                                    <td name="td_quantity" class="text-right">
+                                        <span t-esc="'{0:,.2f}'.format(float(doc['quantity']))" />
+                                    </td>
+                                    <td name="td_priceunit" class="text-right">
+                                        <span t-esc="'{0:,.2f}'.format(float(doc['price_unit']))" />
+                                    </td>
+                                    <t t-set="current_section" t-value="line"/>
+                                    <t t-set="current_subtotal" t-value="0"/>       
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <div class="clearfix" name="so_total_summary">
+                        <div id="total" class="row" name="total">
+                            <table class="table table-sm">
+
+                                <tr class="is-subtotal text-right">
+                                    <td name="td_section_subtotal" colspan="99" t-if="amount_total">
+                                        <strong class="mr16">Total Consumption (KSH)</strong>
+                                        <span t-esc="'{0:,.2f}'.format(float(amount_total))" />
+                                        <span t-esc="currency_id" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </t>
+    </t>
+    </template>
+</odoo>

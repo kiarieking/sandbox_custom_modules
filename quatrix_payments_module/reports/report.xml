@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Supplier Report -->
+        <report
+            id="supplier_report_statement"
+            model="supplier.report"
+            string="Supplier Statement"
+            report_type="qweb-pdf"
+            name="quatrix_payments_module.supplier_report"
+            file="quatrix_payments_module.supplier_report"
+        />
+
+    </data>
+</odoo>

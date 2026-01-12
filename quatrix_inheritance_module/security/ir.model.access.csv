@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_deduction_line_user,account.deduction.line,model_account_deduction_line,base.group_user,1,1,1,1
+access_accounting_revenue_cost_wizard,access_accounting_revenue_cost_wizard,model_accounting_revenue_cost_wizard,base.group_user,1,1,1,0
+access_sale_uninvoiced_report_wizard,access_sale_uninvoiced_report_wizard,model_sale_uninvoiced_report_wizard,base.group_user,1,1,1,0
+access_partner_statement_wizard,access_partner_statement_wizard,model_partner_statement_wizard,base.group_user,1,1,1,0

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fuel_voucher_user,fuel.voucher.user,model_fuel_voucher,base.group_user,1,1,1,0
+access_fuel_voucher_line_user,fuel.voucher.line.user,model_fuel_voucher_line,base.group_user,1,1,1,1
+access_fuel_voucher_confirm,access_fuel_voucher_confirm,model_fuel_voucher_confirm,base.group_user,1,1,1,0
+access_partner_fuel_wizard,access_partner_fuel_wizard,model_partner_fuel_wizard,base.group_user,1,1,1,0

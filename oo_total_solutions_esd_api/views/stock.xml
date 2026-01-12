@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- product.template inherit form view -->
+    <record id="oo_esd_product_template_only_form_view" model="ir.ui.view">
+        <field name="name">product.template.inherit.view.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="after">
+                <field name="hscode_id" widget="many2one" options="{'no_create': True, 'no_create_edit':True}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- product.hscode tree view -->
+    <record id="oo_product_hscode_view_tree" model="ir.ui.view">
+        <field name="name">product.hscode.view.tree</field>
+        <field name="model">product.hscode</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="tax_id"/>
+                <field name="hsdesc"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- product.hscode search view -->
+    <record id="oo_product_hscode_view_search" model="ir.ui.view">
+        <field name="name">product.hscode.view.search</field>
+        <field name="model">product.hscode</field>
+        <field name="arch" type="xml">
+            <search string="Search Description">
+                <field name="name"/>
+                <field name="hsdesc"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- product.hscode form view -->
+    <record id="oo_product_hscode_view_form" model="ir.ui.view">
+        <field name="name">product.hscode.view.form</field>
+        <field name="model">product.hscode</field>
+        <field name="arch" type="xml">
+            <form string="Products HsCodes">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="tax_id"/>
+                        </group>
+                        <group>
+                            <field name="hsdesc"/>
+                            <field name="description"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- product.hscode action window -->
+    <record id="oo_product_hscode_action" model="ir.actions.act_window">
+        <field name="name">Vat Exempt Codes</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.hscode</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Tax exempt product HsCodes
+            </p>
+            <p>
+                A list of all current goverment approved HsCodes for tax exempt products.
+            </p>
+        </field>
+    </record>
+
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="oo_product_hscodes_menu_act" name="Product HsCodes" parent="stock.menu_product_in_config_stock" action="oo_product_hscode_action" sequence="12"/>
+</odoo>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_billing_billing">
+        <t t-call="web.external_layout">
+
+             <t t-foreach="docs" t-as="doc">
+                <div class="page">
+                    <div class="oe_structure"/>
+
+                    <h2 class="mt16">
+                        <span t-if="doc.status not in ['draft']">Billing Order # </span>
+                        <span t-if="doc.status in ['draft']">Billing Quotation # </span>
+                        <span t-field="doc.name"/>
+                    </h2>
+
+                    <div class="row mt32 mb32" id="informations">
+                        <div t-if="doc.date_billing and doc.status not in ['draft']" class="col-auto mw-100 mb-2">
+                            <strong>Order Date:</strong>
+                            <p class="m-0" t-field="doc.date_billing"/>
+                        </div>
+                        <div t-if="doc.date_billing and doc.status in ['draft']" class="col-auto mw-100 mb-2">
+                            <strong>Quotation Date:</strong>
+                            <p class="m-0" t-field="doc.date_billing" t-options='{"widget": "date"}'/>
+                        </div>
+
+                        
+                        <!-- <div t-if="doc.date_delivery and doc.status in ['draft']" class="col-auto mw-100 mb-2" name="expiration_date">
+                            <strong>Delivery Date:</strong>
+                            <p class="m-0" t-field="doc.date_delivery"/>
+                        </div> -->
+                        <div t-if="doc.create_uid.name" class="col-auto mw-100 mb-2">
+                            <strong>Staff:</strong>
+                            <p class="m-0" t-field="doc.create_uid"/>
+                        </div>
+
+                        <div t-if="doc.partner_id.name" class="col-auto mw-100 mb-2">
+                            <strong>Customer:</strong>
+                            <p class="m-0" t-field="doc.partner_id"/>
+                        </div>
+                    </div>
+
+                        <table class="table table-sm o_main_table">
+                        <thead>
+                            <tr>
+                                <th name="th_description" class="text-left">Product</th>
+                                <th name="th_description" class="text-left">Description</th>
+                                <th name="th_description" class="text-left">Reference</th>
+                                <th name="th_description" class="text-left">Notes</th>
+                                <th name="th_quantity" class="text-right">Quantity</th>
+                                <th name="th_priceunit" class="text-right">Unit Price</th>
+                            </tr>
+                        </thead>
+                        <tbody class="sale_tbody">
+                            <t t-set="current_subtotal" t-value="0"/>
+
+                            <t t-foreach="doc.order_line" t-as="line">
+                                <tr>
+                                    <td name="td_name"><span t-field="line.product_id.name"/></td>
+                                    <td name="td_name"><span t-field="line.name"/></td>
+                                    <td name="td_name"><span t-field="doc.reference_number"/></td>
+                                    <td name="td_name"><span t-field="line.notes"/></td>
+                                    <td name="td_quantity" class="text-right">
+                                        <span t-field="line.quantity"/>
+                                    </td>
+                                    <td name="td_priceunit" class="text-right">
+                                        <span t-field="line.price_unit"/>
+                                    </td>
+                                    <t t-set="current_section" t-value="line"/>
+                                    <t t-set="current_subtotal" t-value="0"/>       
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <div class="clearfix" name="so_total_summary">
+                        <div id="total" class="row" name="total">
+                            <table class="table table-sm">
+
+                                <tr class="is-subtotal text-right">
+                                    <td name="td_section_subtotal" colspan="99">
+                                        <strong class="mr16">Subtotal</strong>
+                                        <span
+                                            t-esc="doc.amount_total"
+                                            t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
+                                        />
+                                    </td>
+                                </tr>
+
+                                <tr class="is-subtotal text-right">
+                                    <td name="td_section_subtotal" colspan="99">
+                                        <strong class="mr16">Total</strong>
+                                        <span
+                                            t-esc="doc.amount_total"
+                                            t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
+                                        />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_billing">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="quatrix_billing_module.report_billing_billing" />
+            </t>
+        </t>
+    </template>
+</odoo>

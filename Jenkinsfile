@@ -18,7 +18,7 @@ pipeline{
 
                     . venv/bin/activate
 
-                    pip install -r requirements.txt
+                    pip install -r odoo_sandbox/requirements.txt
 
 
                 '''
@@ -34,7 +34,7 @@ pipeline{
                     
                     . venv/bin/activate
 
-                    pytest -q --tb=short authentication/test_login.py::test_valid_login
+                    pytest -q --tb=short odoo_sandbox/authentication/test_login.py::test_valid_login
 
                     echo "test confirm deploy2"
 

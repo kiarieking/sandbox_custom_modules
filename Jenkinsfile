@@ -8,60 +8,108 @@ pipeline{
     stages{
         stage("setup environment"){
             steps{
-               
-                sh '''
+                script{
+                    if (env.BRANCH_NAME == 'Main'){
+
+                        echo "Setting up Main Branch"
+
+                         sh '''
                     
+                            pwd
 
-                    pwd
+                            python3 -m venv venv
 
-                    python3 -m venv venv
+                            . venv/bin/activate
 
-                    . venv/bin/activate
+                            pip install -r odoo_sandbox/requirements.txt
 
-                    pip install -r odoo_sandbox/requirements.txt
+                            '''    
 
+                    }
 
-                '''
-                
+                    if (env.BRANCH_NAME == 'Work-pc'){
 
+                        echo "Setting up Work-pc branch"
+                    }
+
+                    if (env.BRANCH_NAME == 'Home_pc'){
+                        echo "Setting up Home-pc branch"
+                    }
+                }
+               
             }
             
         }
 
         stage("run the tests"){
             steps{
-                sh '''
+                script{
+                     if (env.BRANCH_NAME == 'Main'){
+                        sh '''
                     
-                    . venv/bin/activate
+                            . venv/bin/activate
 
-                    pytest -q --tb=short odoo_sandbox/authentication/test_login.py::test_valid_login
+                            pytest -q --tb=short odoo_sandbox/authentication/test_login.py::test_valid_login
 
-                    echo "test merge function on Jenkins"
+                            echo "test merge function on Jenkins"
 
-                '''
+                        '''
+                     }
+
+
+                    if (env.BRANCH_NAME == 'Work-pc'){
+
+                        echo "Test Work-pc branch"
+                    }
+
+                    if (env.BRANCH_NAME == 'Home_pc'){
+                        echo "Test Home-pc branch"
+                    }
+
+
+                }
+                
             }
         }
 
         stage("Deploy changes"){
             steps{
-                sh '''
+                script{
+                    if (env.BRANCH_NAME == 'Main'){
+                                
+                        sh '''
 
-                    ssh kkiarie@sandbox.erp.quatrixglobal.com << EOF
+                            ssh kkiarie@sandbox.erp.quatrixglobal.com << EOF
 
-                    whoami
+                            whoami
 
-                    sudo systemctl stop odoo15
+                            sudo systemctl stop odoo15
 
-                    cd /opt/odoo15
+                            cd /opt/odoo15
 
-                    /home/kkiarie/.pyenv/versions/odoo15env/bin/python3 ./odoo-bin -c /etc/odoo15/odoo.conf -d odoo15sandbox -u quatrix_dispatch_module --stop-after-init
+                            /home/kkiarie/.pyenv/versions/odoo15env/bin/python3 ./odoo-bin -c /etc/odoo15/odoo.conf -d odoo15sandbox -u quatrix_dispatch_module --stop-after-init
 
-                    sudo systemctl start odoo15
+                            sudo systemctl start odoo15
 
-                    exit
+                            exit
 
-                    EOF
-                '''
+                            EOF
+                        '''
+                    }
+
+                    if (env.BRANCH_NAME == 'Work-pc'){
+
+                        echo "Deploy Work-pc branch"
+                    }
+
+                    if (env.BRANCH_NAME == 'Home_pc'){
+                        echo "Deploy Home-pc branch"
+                    }
+
+
+
+                }
+                
             }
         }
     }

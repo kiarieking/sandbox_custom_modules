@@ -7,10 +7,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from dotenv import load_dotenv, find_dotenv
+from pathlib import Path
 import os
 import tempfile
 import base64
 import time
+
+load_dotenv(dotenv_path=Path(__file__).resolve().parent / ".env")
 
 @pytest.fixture(scope='function')
 def driver():
@@ -25,11 +28,12 @@ def driver():
     driver = webdriver.Chrome(service=service,options=options)
     yield driver
     driver.quit()
-    
+
+
 @pytest.fixture(scope="function")
 def login(driver):
     def _login(email,password):
-        load_dotenv()
+        # load_dotenv()
         URL = os.getenv('URL')
         print(URL)
         print(type(URL))

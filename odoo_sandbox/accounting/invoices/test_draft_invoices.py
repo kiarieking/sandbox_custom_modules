@@ -64,7 +64,8 @@ def open_invoices(driver,status,invoice_no):
     status_xpath = f"//th[@class='o_group_name' and contains(normalize-space(), '{status}')]"
     invoice_grp = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,status_xpath)))
     invoice_grp.click()
-    invoice_xpath = f"//td[@name='name' and normalize-space()='{invoice_no}']"
+    # invoice_xpath = f"//td[@name='name' and normalize-space()='{invoice_no}']"
+    invoice_xpath = "//tbody/tr[contains(@class,'o_data_row')][1]"
     invoice = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,invoice_xpath)))
     invoice.click()
 

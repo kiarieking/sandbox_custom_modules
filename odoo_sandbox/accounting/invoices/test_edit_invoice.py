@@ -16,8 +16,7 @@ def test_edit_invoice(driver,login,accounting_icon):
     accounting_icon()
     group_invoices(driver)
     status = "Draft"
-    invoice_no = "INV/2023/0844"
-    open_invoices(driver,status,invoice_no)
+    open_invoices(driver,status)
     # edit_invoice_details(driver) 
     edit_invoice_line(driver)
     time.sleep(3)
@@ -38,13 +37,47 @@ def group_invoices(driver):
     status = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, "//span[@role='menuitemcheckbox' and normalize-space()='Status']")))
     status.click()
 
-def open_invoices(driver,status,invoice_no):
+# def open_invoices(driver,status,invoice_no):
+#     status_xpath = f"//th[@class='o_group_name' and contains(normalize-space(), '{status}')]"
+#     invoice_grp = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,status_xpath)))
+#     invoice_grp.click()
+#     invoice_xpath = f"//td[@name='name' and normalize-space()='{invoice_no}']"
+#     invoice = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,invoice_xpath)))
+#     invoice.click()
+
+def open_invoices(driver,status):
+    print(">>> USING NEW open_invoices <<<")
     status_xpath = f"//th[@class='o_group_name' and contains(normalize-space(), '{status}')]"
     invoice_grp = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,status_xpath)))
     invoice_grp.click()
-    invoice_xpath = f"//td[@name='name' and normalize-space()='{invoice_no}']"
-    invoice = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,invoice_xpath)))
+    wait = WebDriverWait(driver, 20)
+    wait.until(
+        EC.presence_of_element_located(
+            (By.XPATH, "//tbody//tr[contains(@class,'o_data_row')]")
+        )
+    )
+
+    first_invoice_xpath = (
+        "(//tbody//tr[contains(@class,'o_data_row')]"
+        "//td[@name='name'])[1]"
+    )
+
+    # WAIT: element is visible (NOT clickable)
+    invoice = wait.until(
+        EC.visibility_of_element_located((By.XPATH, first_invoice_xpath))
+    )
     invoice.click()
+
+    # Scroll into view (critical for Odoo)
+    #driver.execute_script(
+        # "arguments[0].scrollIntoView({block:'center'});", invoice
+    # )
+
+    # Click with JS fallback
+    # try:
+    #     invoice.click()
+    # except Exception:
+    #     driver.execute_script("arguments[0].click();", invoice)
 
 def edit_invoice_details(driver):
     edit_btn = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,"//button[contains(@class,'o_form_button_edit') and @title='Edit record']")))

@@ -29,11 +29,31 @@ pipeline{
 
                     if (env.BRANCH_NAME == 'Work-pc'){
 
-                        echo "Setting up Work-pc branch"
+                        sh '''
+                    
+                            pwd
+
+                            python3 -m venv venv
+
+                            . venv/bin/activate
+
+                            pip install -r odoo_sandbox/requirements.txt
+
+                            '''    
                     }
 
                     if (env.BRANCH_NAME == 'Home_pc'){
-                        echo "Setting up Home-pc branch"
+                        sh '''
+                    
+                            pwd
+
+                            python3 -m venv venv
+
+                            . venv/bin/activate
+
+                            pip install -r odoo_sandbox/requirements.txt
+
+                            '''    
                     }
                 }
                
@@ -59,11 +79,27 @@ pipeline{
 
                     if (env.BRANCH_NAME == 'Work-pc'){
 
-                        echo "Test Work-pc branch"
+                        sh '''
+                    
+                            . venv/bin/activate
+
+                            pytest -q --tb=short odoo_sandbox/authentication/test_login.py::test_valid_login
+
+                            echo "test merge function on Jenkins"
+
+                        '''
                     }
 
                     if (env.BRANCH_NAME == 'Home_pc'){
-                        echo "Test Home-pc branch"
+                        sh '''
+                    
+                            . venv/bin/activate
+
+                            pytest -q --tb=short odoo_sandbox/authentication/test_login.py::test_valid_login
+
+                            echo "test Work-pc branch run tests"
+
+                        '''
                     }
 
 

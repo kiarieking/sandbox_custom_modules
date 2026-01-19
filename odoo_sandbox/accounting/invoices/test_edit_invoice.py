@@ -102,9 +102,46 @@ def edit_invoice_details(driver):
     save_btn.click()
 
 def edit_invoice_line(driver):
-    edit_btn = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,"//button[contains(@class,'o_form_button_edit') and @title='Edit record']")))
-    edit_btn.click()
-    line_row = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,"//tr[.//span[contains(@class,'o_tag_badge_text') and text()='VAT']]")))
-    line_row.click()
-    product_line = WebDriverWait(driver,10).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class,'o_input_dropdown')]//input[contains(@class,'ui-autocomplete-input')]")))
-    product_line.click()
+    wait = WebDriverWait(driver, 15)
+
+    # Click Edit button
+    wait.until(EC.element_to_be_clickable((
+        By.XPATH, "//button[contains(@class,'o_form_button_edit')]"
+    ))).click()
+
+    # First product cell
+    product_cell = wait.until(EC.element_to_be_clickable((
+        By.XPATH,
+        "(//tbody[contains(@class,'ui-sortable')]//tr[contains(@class,'o_data_row')])[1]"
+        "//td[@name='product_id']"
+    )))
+
+    # Scroll into view and double-click only (avoid direct click)
+    driver.execute_script("arguments[0].scrollIntoView(true);", product_cell)
+    ActionChains(driver).move_to_element(product_cell).double_click(product_cell).perform()
+
+    # Brief pause for JS editor
+    time.sleep(0.3)
+
+    # Type the product name
+    actions = ActionChains(driver)
+    actions.send_keys(Keys.CONTROL, "a")
+    actions.send_keys(Keys.DELETE)
+    actions.send_keys("KAPSABET")
+    actions.perform()
+
+    # Trigger dropdown
+    ActionChains(driver).send_keys(Keys.ARROW_DOWN).perform()
+
+    # Wait for dropdown items
+    wait.until(EC.presence_of_element_located((
+        By.XPATH, "//ul[contains(@class,'ui-autocomplete')]//li"
+    )))
+
+    # Select first item and commit
+    ActionChains(driver).send_keys(Keys.ENTER).send_keys(Keys.TAB).perform()
+
+    # Save invoice
+    wait.until(EC.element_to_be_clickable((
+        By.XPATH, "//button[contains(@class,'o_form_button_save')]"
+    ))).click()

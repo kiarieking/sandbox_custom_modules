@@ -16,7 +16,8 @@ def test_payment_invoice(driver,login,accounting_icon):
     accounting_icon()
     group_invoices(driver)
     status = "Posted"
-    open_invoices(driver,status)
+    invoice_no = "INV/2025/0417"
+    open_specific_invoices(driver,status,invoice_no)
     make_payment(driver)
 
 @pytest.mark.order(23)
@@ -25,7 +26,8 @@ def test_add_credit_note(driver,login,accounting_icon):
     accounting_icon()
     group_invoices(driver)
     status = "Posted"
-    open_invoices(driver,status)
+    invoice_no = "INV/2025/0417"
+    open_specific_invoices(driver,status,invoice_no)
     add_creditnote(driver)
 
 @pytest.mark.order(24)
@@ -53,13 +55,13 @@ def group_invoices(driver):
     status = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, "//span[@role='menuitemcheckbox' and normalize-space()='Status']")))
     status.click()
 
-# def open_invoices(driver,status,invoice_no):
-#     status_xpath = f"//th[@class='o_group_name' and contains(normalize-space(), '{status}')]"
-#     invoice_grp = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,status_xpath)))
-#     invoice_grp.click()
-#     invoice_xpath = f"//td[@name='name' and normalize-space()='{invoice_no}']"
-#     invoice = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,invoice_xpath)))
-#     invoice.click()
+def open_specific_invoices(driver,status,invoice_no):
+    status_xpath = f"//th[@class='o_group_name' and contains(normalize-space(), '{status}')]"
+    invoice_grp = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,status_xpath)))
+    invoice_grp.click()
+    invoice_xpath = f"//td[@name='name' and normalize-space()='{invoice_no}']"
+    invoice = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,invoice_xpath)))
+    invoice.click()
 
 def open_invoices(driver,status):
     print(">>> USING NEW open_invoices <<<")

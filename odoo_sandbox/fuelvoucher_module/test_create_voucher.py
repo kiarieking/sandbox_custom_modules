@@ -54,7 +54,7 @@ def fill_voucher_form(driver):
     unit_price = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.NAME, "price_unit")))
     unit_price.click()
     unit_price.send_keys('5')
-    save_btn = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[@class='btn btn-primary o_form_button_save' and @type='button' and @accesskey='s']")))
+    save_btn = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[contains(@class,'o_form_button_save')]")))
     save_btn.click()
     time.sleep(2)
 

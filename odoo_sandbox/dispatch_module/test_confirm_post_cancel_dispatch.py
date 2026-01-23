@@ -9,6 +9,7 @@ import pytest
 load_dotenv()
 EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
+POD_PATH = os.getenv("POD_PATH")
 
 @pytest.mark.order(15)
 def test_confirm_dispatch(driver,login,dispatch_icon):
@@ -63,8 +64,15 @@ def complete_delivery(driver):
     edit_btn.click()
     time.sleep(5)
     pod_input = WebDriverWait(driver,10).until(EC.presence_of_element_located((By.XPATH, "//input[@type='file' and @name='ufile']")))
-    pod_input.send_keys("/tmp/sample.pdf")
-    time.sleep(5)
+    pod_input.send_keys(POD_PATH)
+    # time.sleep(5)
+    # wait = WebDriverWait(driver,15)
+    # wait.until(
+    #     EC.invisibility_of_element_located(
+    #         (By.CSS_SELECTOR, "main.modal-body")
+    #     )
+    #     )
+
     save_btn = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, "//button[@type='button' and contains(@class, 'o_form_button_save')]")))
     save_btn.click()
     time.sleep(5)                                          

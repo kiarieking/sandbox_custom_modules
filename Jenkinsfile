@@ -138,9 +138,11 @@ pipeline{
                         sh '''
                             ssh kkiarie@sandbox.erp.quatrixglobal.com << EOF 
 
-                            cd /opt/custom_modules
+                            cd /opt/custom_modules/quatrix-odoo
 
                             git remote -v
+
+                            git branch
 
                             pwd
 

@@ -144,6 +144,8 @@ pipeline{
 
                             pwd
 
+                            exit
+
                             EOF
                         
                            '''

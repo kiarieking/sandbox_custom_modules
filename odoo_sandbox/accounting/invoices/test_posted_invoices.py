@@ -9,6 +9,7 @@ import os
 load_dotenv()
 EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
+POD_PATH = os.getenv("POD_PATH")
 
 @pytest.mark.order(22)
 def test_payment_invoice(driver,login,accounting_icon):

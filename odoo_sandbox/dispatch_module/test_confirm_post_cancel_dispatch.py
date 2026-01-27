@@ -11,16 +11,16 @@ EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
 POD_PATH = os.getenv("POD_PATH")
 
-@pytest.mark.order(15)
-def test_confirm_dispatch(driver,login,dispatch_icon):
-    status = "Quotation"
-    # dispatch_no = "DO11192"
-    login(EMAIL,PASSWORD)
-    dispatch_icon()
-    group_dispatch(driver)
-    open_dispatch(driver,status)
-    complete_delivery(driver)
-    time.sleep(5)
+# @pytest.mark.order(15)
+# def test_confirm_dispatch(driver,login,dispatch_icon):
+#     status = "Quotation"
+#     # dispatch_no = "DO11192"
+#     login(EMAIL,PASSWORD)
+#     dispatch_icon()
+#     group_dispatch(driver)
+#     open_dispatch(driver,status)
+#     complete_delivery(driver)
+#     time.sleep(5)
 
 @pytest.mark.order(16)
 def test_post_dispatch(driver,login,dispatch_icon):

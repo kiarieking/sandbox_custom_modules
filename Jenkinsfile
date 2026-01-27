@@ -162,7 +162,30 @@ pipeline{
                     }
 
                     if (env.BRANCH_NAME == 'Home_pc'){
-                        echo "Deploy Home-pc branch"
+
+                        sh '''
+
+                        ssh kkiarie@sandbox.erp.quatrixglobal.com << EOF
+
+                            cd /opt/custom_modules/quatrix-odoo
+
+                            git branch
+
+                            git fetch origin
+
+                            git checkout Main
+
+                            git pull origin Main
+
+                            git merge origin/Home-pc --no-ff -m "JENKINS: Merge Home-pc into Main"
+
+                            git push origin Main
+
+                            exit
+
+                            EOF
+
+                            '''
                     }
 
 

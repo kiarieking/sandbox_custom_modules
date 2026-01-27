@@ -135,7 +135,18 @@ pipeline{
 
                     if (env.BRANCH_NAME == 'Work-pc'){
 
-                        echo "Deploy Work-pc branch"
+                        sh '''
+                            ssh kkiarie@sandbox.erp.quatrixglobal.com << EOF 
+
+                            cd /opt/custom_modules
+
+                            git remote -v
+
+                            pwd
+
+                            EOF
+                        
+                           '''
                     }
 
                     if (env.BRANCH_NAME == 'Home_pc'){

@@ -23,6 +23,7 @@ def driver():
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
+    options.add_argument("--window-size=1920,1080")
     # tmp_profile_dir = "~/.config/google-chrome"
     # options.add_argument(f"--user-data-dir={tmp_profile_dir}")
     driver = webdriver.Chrome(service=service,options=options)

@@ -144,8 +144,16 @@ pipeline{
 
                             git branch
 
-                            pwd
+                            git fetch origin
 
+                            git checkout Main
+
+                            git pull origin Main
+
+                            git merge origin/Work-pc --no-ff -m "JENKINS: Merge Work-pc into Main"
+
+                            git push origin Main
+                            
                             exit
 
                             EOF

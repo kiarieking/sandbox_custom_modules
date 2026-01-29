@@ -84,7 +84,7 @@ pipeline{
                         '''
                     }
 
-                    if (env.BRANCH_NAME == 'Home_pc'){
+                    if (env.BRANCH_NAME == 'Home-pc'){
                         sh '''
                     
                             . venv/bin/activate
@@ -155,7 +155,7 @@ pipeline{
                            '''
                     }
 
-                    if (env.BRANCH_NAME == 'Home_pc'){
+                    if (env.BRANCH_NAME == 'Home-pc'){
 
                         sh '''
 

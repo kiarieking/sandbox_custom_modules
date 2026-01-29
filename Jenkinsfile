@@ -148,8 +148,6 @@ pipeline{
 
                             git checkout Main
 
-                            git pull origin Main
-
                             git merge origin/Work-pc --no-ff -m "JENKINS: Merge Work-pc into Main"
 
                             git push origin Main
@@ -161,7 +159,7 @@ pipeline{
                            '''
                     }
 
-                    if (env.BRANCH_NAME == 'Home_pc'){
+                    if (env.BRANCH_NAME == 'Home-pc'){
 
                         sh '''
 
@@ -174,8 +172,6 @@ pipeline{
                             git fetch origin
 
                             git checkout Main
-
-                            git pull origin Main
 
                             git merge origin/Home-pc --no-ff -m "JENKINS: Merge Home-pc into Main"
 

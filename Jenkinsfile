@@ -45,7 +45,13 @@ pipeline{
                     if (env.BRANCH_NAME == 'Home_pc'){
                         sh '''
                     
-                          /home/kkiarie/scripts/jenkins.sh
+                            pwd
+
+                            python3 -m venv venv
+
+                            . venv/bin/activate
+
+                            pip install -r odoo_sandbox/requirements.txt
 
                             '''    
                     }
@@ -84,14 +90,14 @@ pipeline{
                         '''
                     }
 
-                    if (env.BRANCH_NAME == 'Home-pc'){
+                    if (env.BRANCH_NAME == 'Home_pc'){
                         sh '''
                     
                             . venv/bin/activate
 
                             pytest -q --tb=short odoo_sandbox/authentication/test_login.py::test_valid_login
 
-                            echo "test Work-pc branch run tests"
+                            echo "test Work-pc branch run tests2"
 
                         '''
                     }
@@ -155,7 +161,7 @@ pipeline{
                            '''
                     }
 
-                    if (env.BRANCH_NAME == 'Home-pc'){
+                    if (env.BRANCH_NAME == 'Home_pc'){
 
                         sh '''
 

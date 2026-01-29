@@ -59,7 +59,7 @@ pipeline{
 
                             pytest -q --tb=short odoo_sandbox/authentication/test_login.py::test_valid_login
 
-                            echo "test merge function on Jenkins test 5"
+                            echo "test merge function on Jenkins test 6"
 
                         '''
                      }

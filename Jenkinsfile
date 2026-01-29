@@ -45,13 +45,7 @@ pipeline{
                     if (env.BRANCH_NAME == 'Home_pc'){
                         sh '''
                     
-                            pwd
-
-                            python3 -m venv venv
-
-                            . venv/bin/activate
-
-                            pip install -r odoo_sandbox/requirements.txt
+                          /home/kkiarie/scripts/jenkins.sh
 
                             '''    
                     }
@@ -90,7 +84,7 @@ pipeline{
                         '''
                     }
 
-                    if (env.BRANCH_NAME == 'Home_pc'){
+                    if (env.BRANCH_NAME == 'Home-pc'){
                         sh '''
                     
                             . venv/bin/activate
@@ -161,7 +155,7 @@ pipeline{
                            '''
                     }
 
-                    if (env.BRANCH_NAME == 'Home_pc'){
+                    if (env.BRANCH_NAME == 'Home-pc'){
 
                         sh '''
 

@@ -67,7 +67,7 @@ pipeline{
                     
                             /home/kkiarie/scripts/run_tests.sh
 
-                            echo "Script ran without errors!!!!"
+                            echo "Script run_tests.sh without errors!!!"
 
                         '''
                     }

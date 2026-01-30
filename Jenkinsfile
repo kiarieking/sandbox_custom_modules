@@ -55,11 +55,7 @@ pipeline{
                      if (env.BRANCH_NAME == 'Main'){
                         sh '''
                     
-                            . venv/bin/activate
-
-                            pytest -q --tb=short odoo_sandbox/authentication/test_login.py::test_valid_login
-
-                            echo "test merge function on Jenkins test 6"
+                            /home/kkiarie/scripts/run_tests.sh
 
                         '''
                      }
@@ -69,11 +65,7 @@ pipeline{
 
                         sh '''
                     
-                            . venv/bin/activate
-
-                            pytest -q --tb=short odoo_sandbox/authentication/test_login.py::test_valid_login
-
-                            echo "test merge function on Jenkins"
+                            /home/kkiarie/scripts/run_tests.sh
 
                         '''
                     }

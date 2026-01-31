@@ -6,7 +6,7 @@ pipeline{
 
     }
     stages{
-        stage("setup environment"){
+        stage("Setup Environment"){
             steps{
                 script{
                     if (env.BRANCH_NAME == 'Main'){

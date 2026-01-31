@@ -15,7 +15,7 @@ pipeline{
 
                          sh '''
                     
-                             /home/kkiarie/scripts/ci_script.sh setup_environment
+                             /home/kkiarie/scripts/ci_script.sh stage_setup_environment
 
                             '''    
 
@@ -25,15 +25,15 @@ pipeline{
 
                         sh '''
                     
-                            /home/kkiarie/scripts/ci_script.sh setup_environment
+                            /home/kkiarie/scripts/ci_script.sh stage_setup_environment
 
                             '''    
                     }
 
-                    if (env.BRANCH_NAME == 'Home_pc'){
+                    if (env.BRANCH_NAME == 'Home-pc'){
                         sh '''
                     
-                           /home/kkiarie/scripts/ci_script.sh setup_environment
+                           /home/kkiarie/scripts/ci_script.sh stage_setup_environment
 
                             '''    
                     }
@@ -49,7 +49,7 @@ pipeline{
                      if (env.BRANCH_NAME == 'Main'){
                         sh '''
                     
-                            /home/kkiarie/scripts/ci_script.sh run_tests
+                            /home/kkiarie/scripts/ci_script.sh stage_run_tests
 
 
                         '''
@@ -60,16 +60,16 @@ pipeline{
 
                         sh '''
                     
-                            /home/kkiarie/scripts/ci_script.sh run_tests
+                            /home/kkiarie/scripts/ci_script.sh stage_run_tests
 
 
                         '''
                     }
 
-                    if (env.BRANCH_NAME == 'Home_pc'){
+                    if (env.BRANCH_NAME == 'Home-pc'){
                         sh '''
                     
-                            /home/kkiarie/scripts/ci_script.sh run_tests
+                            /home/kkiarie/scripts/ci_script.sh stage_run_tests
                             
 
                         '''

@@ -69,11 +69,8 @@ pipeline{
                     if (env.BRANCH_NAME == 'Home_pc'){
                         sh '''
                     
-                            . venv/bin/activate
-
-                            pytest -q --tb=short odoo_sandbox/authentication/test_login.py::test_valid_login
-
-                            echo "test Work-pc branch run tests2"
+                            /home/kkiarie/scripts/ci_script.sh run_tests
+                            
 
                         '''
                     }

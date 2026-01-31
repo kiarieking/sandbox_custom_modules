@@ -15,13 +15,7 @@ pipeline{
 
                          sh '''
                     
-                            pwd
-
-                            python3 -m venv venv
-
-                            . venv/bin/activate
-
-                            pip install -r odoo_sandbox/requirements.txt
+                             /home/kkiarie/scripts/jenkins.sh
 
                             '''    
 
@@ -31,13 +25,7 @@ pipeline{
 
                         sh '''
                     
-                            pwd
-
-                            python3 -m venv venv
-
-                            . venv/bin/activate
-
-                            pip install -r odoo_sandbox/requirements.txt
+                            /home/kkiarie/scripts/jenkins.sh
 
                             '''    
                     }
@@ -67,11 +55,7 @@ pipeline{
                      if (env.BRANCH_NAME == 'Main'){
                         sh '''
                     
-                            . venv/bin/activate
-
-                            pytest -q --tb=short odoo_sandbox/authentication/test_login.py::test_valid_login
-
-                            echo "test merge function on Jenkins test 2"
+                            /home/kkiarie/scripts/run_tests.sh
 
                         '''
                      }
@@ -81,11 +65,9 @@ pipeline{
 
                         sh '''
                     
-                            . venv/bin/activate
+                            /home/kkiarie/scripts/run_tests.sh
 
-                            pytest -q --tb=short odoo_sandbox/authentication/test_login.py::test_valid_login
-
-                            echo "test merge function on Jenkins"
+                            echo "Script run_tests.sh without errors!!!"
 
                         '''
                     }
@@ -148,8 +130,6 @@ pipeline{
 
                             git checkout Main
 
-                            git pull origin Main
-
                             git merge origin/Work-pc --no-ff -m "JENKINS: Merge Work-pc into Main"
 
                             git push origin Main
@@ -161,7 +141,7 @@ pipeline{
                            '''
                     }
 
-                    if (env.BRANCH_NAME == 'Home_pc'){
+                    if (env.BRANCH_NAME == 'Home-pc'){
 
                         sh '''
 
@@ -174,8 +154,6 @@ pipeline{
                             git fetch origin
 
                             git checkout Main
-
-                            git pull origin Main
 
                             git merge origin/Home-pc --no-ff -m "JENKINS: Merge Home-pc into Main"
 

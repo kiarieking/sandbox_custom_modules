@@ -49,7 +49,8 @@ pipeline{
                      if (env.BRANCH_NAME == 'Main'){
                         sh '''
                     
-                            /home/kkiarie/scripts/run_tests.sh
+                            /home/kkiarie/scripts/ci_script.sh run_tests
+
 
                         '''
                      }
@@ -59,9 +60,8 @@ pipeline{
 
                         sh '''
                     
-                            /home/kkiarie/scripts/run_tests.sh
+                            /home/kkiarie/scripts/ci_script.sh run_tests
 
-                            echo "Script run_tests.sh without errors!!!"
 
                         '''
                     }

@@ -19,7 +19,7 @@ pipeline{
                
             }
             
-        }
+        
 
         stage("run the tests"){
             steps{
@@ -118,3 +118,5 @@ pipeline{
             )
         }
     }
+
+}

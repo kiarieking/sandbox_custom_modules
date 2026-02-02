@@ -24,35 +24,12 @@ pipeline{
         stage("run the tests"){
             steps{
                 script{
-                     if (env.BRANCH_NAME == 'Main'){
-                        sh '''
-                    
-                            /home/kkiarie/scripts/ci_script.sh stage_run_tests
+                     
+                    sh '''
 
+                        /home/kkiarie/scripts/ci_script.sh stage_run_tests
 
-                        '''
-                     }
-
-
-                    if (env.BRANCH_NAME == 'Work-pc'){
-
-                        sh '''
-                    
-                            /home/kkiarie/scripts/ci_script.sh stage_run_tests
-
-
-                        '''
-                    }
-
-                    if (env.BRANCH_NAME == 'Home-pc'){
-                        sh '''
-                    
-                            /home/kkiarie/scripts/ci_script.sh stage_run_tests
-                            
-
-                        '''
-                    }
-
+                    '''
 
                 }
                 

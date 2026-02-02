@@ -9,39 +9,17 @@ pipeline{
         stage("Setup Environment"){
             steps{
                 script{
-                    if (env.BRANCH_NAME == 'Main'){
+                    sh '''
 
-                        echo "Setting up Main Branch!"
+                    /home/kkiarie/scripts/ci_script.sh stage_setup_environment
 
-                         sh '''
-                    
-                             /home/kkiarie/scripts/ci_script.sh stage_setup_environment
-
-                            '''    
-
-                    }
-
-                    if (env.BRANCH_NAME == 'Work-pc'){
-
-                        sh '''
-                    
-                            /home/kkiarie/scripts/ci_script.sh stage_setup_environment
-
-                            '''    
-                    }
-
-                    if (env.BRANCH_NAME == 'Home-pc'){
-                        sh '''
-                    
-                           /home/kkiarie/scripts/ci_script.sh stage_setup_environment
-
-                            '''    
-                    }
+                    '''
+                }
                 }
                
             }
             
-        }
+        
 
         stage("run the tests"){
             steps{
@@ -140,4 +118,5 @@ pipeline{
             )
         }
     }
+
 }

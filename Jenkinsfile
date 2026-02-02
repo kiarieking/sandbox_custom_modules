@@ -6,16 +6,16 @@ pipeline{
 
     }
     stages{
-        stage("setup environment"){
+        stage("Setup Environment"){
             steps{
                 script{
                     if (env.BRANCH_NAME == 'Main'){
 
-                        echo "Setting up Main Branch"
+                        echo "Setting up Main Branch!"
 
                          sh '''
                     
-                             /home/kkiarie/scripts/jenkins.sh
+                             /home/kkiarie/scripts/ci_script.sh stage_setup_environment
 
                             '''    
 
@@ -25,21 +25,15 @@ pipeline{
 
                         sh '''
                     
-                            /home/kkiarie/scripts/jenkins.sh
+                            /home/kkiarie/scripts/ci_script.sh stage_setup_environment
 
                             '''    
                     }
 
-                    if (env.BRANCH_NAME == 'Home_pc'){
+                    if (env.BRANCH_NAME == 'Home-pc'){
                         sh '''
                     
-                            pwd
-
-                            python3 -m venv venv
-
-                            . venv/bin/activate
-
-                            pip install -r odoo_sandbox/requirements.txt
+                           /home/kkiarie/scripts/ci_script.sh stage_setup_environment
 
                             '''    
                     }
@@ -55,7 +49,8 @@ pipeline{
                      if (env.BRANCH_NAME == 'Main'){
                         sh '''
                     
-                            /home/kkiarie/scripts/run_tests.sh
+                            /home/kkiarie/scripts/ci_script.sh stage_run_tests
+
 
                         '''
                      }
@@ -65,21 +60,17 @@ pipeline{
 
                         sh '''
                     
-                            /home/kkiarie/scripts/run_tests.sh
+                            /home/kkiarie/scripts/ci_script.sh stage_run_tests
 
-                            echo "Script run_tests.sh without errors!!!"
 
                         '''
                     }
 
-                    if (env.BRANCH_NAME == 'Home_pc'){
+                    if (env.BRANCH_NAME == 'Home-pc'){
                         sh '''
                     
-                            . venv/bin/activate
-
-                            pytest -q --tb=short odoo_sandbox/authentication/test_login.py::test_valid_login
-
-                            echo "test Work-pc branch run tests"
+                            /home/kkiarie/scripts/ci_script.sh stage_run_tests
+                            
 
                         '''
                     }

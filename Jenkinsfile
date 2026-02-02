@@ -81,53 +81,22 @@ pipeline{
             }
         }
 
-        stage("Deploy changes"){
+        stage("Deploy changes!!"){
             steps{
                 script{
                     if (env.BRANCH_NAME == 'Main'){
                                 
                         sh '''
 
-                            ssh kkiarie@sandbox.erp.quatrixglobal.com << EOF
+                            ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/scripts/update_odoo.sh
 
-                            whoami
-
-                            sudo systemctl stop odoo15
-
-                            cd /opt/odoo15
-
-                            /home/kkiarie/.pyenv/versions/odoo15env/bin/python3 ./odoo-bin -c /etc/odoo15/odoo.conf -d odoo15sandbox -u quatrix_dispatch_module --stop-after-init
-
-                            sudo systemctl start odoo15
-
-                            exit
-
-                            EOF
                         '''
                     }
 
                     if (env.BRANCH_NAME == 'Work-pc'){
 
                         sh '''
-                            ssh kkiarie@sandbox.erp.quatrixglobal.com << EOF 
-
-                            cd /opt/custom_modules/quatrix-odoo
-
-                            git remote -v
-
-                            git branch
-
-                            git fetch origin
-
-                            git checkout Main
-
-                            git merge origin/Work-pc --no-ff -m "JENKINS: Merge Work-pc into Main"
-
-                            git push origin Main
-                            
-                            exit
-
-                            EOF
+                            ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/scripts/merge_to_main.sh
                         
                            '''
                     }
@@ -136,23 +105,7 @@ pipeline{
 
                         sh '''
 
-                        ssh kkiarie@sandbox.erp.quatrixglobal.com << EOF
-
-                            cd /opt/custom_modules/quatrix-odoo
-
-                            git branch
-
-                            git fetch origin
-
-                            git checkout Main
-
-                            git merge origin/Home-pc --no-ff -m "JENKINS: Merge Home-pc into Main"
-
-                            git push origin Main
-
-                            exit
-
-                            EOF
+                        ssh kkiarie@sandbox.erp.quatrixglobal.com  /opt/scripts/merge_to_main.sh
 
                             '''
                     }

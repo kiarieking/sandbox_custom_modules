@@ -43,26 +43,19 @@ pipeline{
                                 
                         sh '''
 
-                            ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/scripts/update_odoo.sh
+                            ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/scripts/deploy_script.sh stage_deploy_changes
 
                         '''
                     }
 
-                    if (env.BRANCH_NAME == 'Work-pc'){
-
-                        sh '''
-                            ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/scripts/merge_to_main.sh
-                        
-                           '''
-                    }
-
-                    if (env.BRANCH_NAME == 'Home-pc'){
+                    else {
 
                         sh '''
 
-                        ssh kkiarie@sandbox.erp.quatrixglobal.com  /opt/scripts/merge_to_main.sh
+                            ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/scripts/deploy_script.sh stage_merge_changes
 
-                            '''
+                        '''
+
                     }
 
 

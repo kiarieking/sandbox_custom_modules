@@ -35,14 +35,14 @@ pipeline{
             }
         }
 
-        stage("Deploy changes!!"){
+        stage("Deploy changes!!!"){
             steps{
                 script{
                     if (env.BRANCH_NAME == 'Main'){
                                 
                         sh '''
 
-                            ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/scripts/deploy_script.sh stage_deploy_changes
+                            ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/custom_modules/quatrix-odoo/scripts/deploy_script.sh stage_deploy_changes
 
                         '''
                     }
@@ -51,7 +51,7 @@ pipeline{
 
                         sh '''
 
-                            ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/scripts/deploy_script.sh stage_merge_changes
+                            ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/custom_modules/quatrix-odoo/scripts/deploy_script.sh stage_merge_changes
 
                         '''
 

@@ -1,3 +1,40 @@
+## TESTING
+
+The tests are in the odoo_sandbox directory.
+
+#### Create virtuual environment
+
+Install curl and pyenv if you don't have them already. Note you can use other virtual environment tools.
+
+    sudo apt install curl
+    curl https://pyenv.run | bash
+
+Add this to the end of your $HOME/.bashrc or $HOME/.zshrc file:
+
+    export PYENV_ROOT="$HOME/.pyenv"
+    command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+
+Reload terminal to apply the changes.
+
+Create the virtual environment. Use python 3.8+ as recommended.
+
+    pyenv install 3.11.3
+    pyenv virtualenv 3.8.3 test_env
+
+#### Install Requirements
+
+    pip install -r requirements.txt
+
+#### Run the tests
+
+    cd odoo_sandbox
+    pytest -q --tb=short .
+
+    
+
+
 
 ## Quatrix ERP
 

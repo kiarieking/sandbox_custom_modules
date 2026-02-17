@@ -82,7 +82,7 @@ pipeline{
             office365ConnectorSend(
                 status: "Build Status",
                 webhookUrl: "${MSTEAMS_HOOK}",
-                message: "Build failed",
+                message: "Build failed. Check build console on jenkins to see more details.",
                 color: "#FF0000 ",
             )
         }

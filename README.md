@@ -2,7 +2,7 @@
 
 The tests are in the odoo_sandbox directory.
 
-#### Create virtuual environment
+#### Create virtuarl environment
 
 Install curl and pyenv if you don't have them already. Note you can use other virtual environment tools.
 

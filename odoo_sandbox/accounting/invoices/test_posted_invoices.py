@@ -27,8 +27,8 @@ def test_add_credit_note(driver,login,accounting_icon):
     accounting_icon()
     group_invoices(driver)
     status = "Posted"
-    invoice_no = "INV/2025/0417"
-    open_specific_invoices(driver,status,invoice_no)
+    # invoice_no = "INV/2025/0417"
+    open_specific_invoices(driver,status)
     add_creditnote(driver)
 
 @pytest.mark.order(24)
@@ -56,13 +56,35 @@ def group_invoices(driver):
     status = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, "//span[@role='menuitemcheckbox' and normalize-space()='Status']")))
     status.click()
 
-def open_specific_invoices(driver,status,invoice_no):
+def open_specific_invoices(driver,status):
+    # status_xpath = f"//th[@class='o_group_name' and contains(normalize-space(), '{status}')]"
+    # invoice_grp = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,status_xpath)))
+    # invoice_grp.click()
+    # invoice_xpath = f"//td[@name='name' and normalize-space()='{invoice_no}']"
+    # invoice = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,invoice_xpath)))
+    # invoice.click()
+    print(">>> USING NEW open_invoices <<<")
     status_xpath = f"//th[@class='o_group_name' and contains(normalize-space(), '{status}')]"
     invoice_grp = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,status_xpath)))
     invoice_grp.click()
-    invoice_xpath = f"//td[@name='name' and normalize-space()='{invoice_no}']"
-    invoice = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,invoice_xpath)))
+    wait = WebDriverWait(driver, 20)
+    wait.until(
+        EC.presence_of_element_located(
+            (By.XPATH, "//tbody//tr[contains(@class,'o_data_row')]")
+        )
+    )
+
+    first_invoice_xpath = (
+        "(//tbody//tr[contains(@class,'o_data_row')]"
+        "//td[@name='name'])[1]"
+    )
+
+    # WAIT: element is visible (NOT clickable)
+    invoice = wait.until(
+        EC.visibility_of_element_located((By.XPATH, first_invoice_xpath))
+    )
     invoice.click()
+
 
 def open_invoices(driver,status):
     print(">>> USING NEW open_invoices <<<")

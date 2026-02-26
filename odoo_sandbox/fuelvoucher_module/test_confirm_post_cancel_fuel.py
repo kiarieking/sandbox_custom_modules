@@ -4,40 +4,43 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from Group_Open_Order import Group_Open_Order
 import pytest
 
 load_dotenv()
 EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
 
+grp_opn = Group_Open_Order()
+
 @pytest.mark.order(3)
 def test_confirm_voucher(driver,login,fuel_icon):
     login(EMAIL,PASSWORD)
     fuel_icon()
-    group_vouchers(driver)
     status = "Quotation"
     voucher_no = "FO3933"
-    open_voucher(driver,status,voucher_no)
+    grp_opn.group_orders(driver)
+    grp_opn.open_order(driver,status)
     confirm_voucher(driver)
 
 @pytest.mark.order(4)
 def test_post_voucher(driver,login,fuel_icon):
     login(EMAIL,PASSWORD)
     fuel_icon()
-    group_vouchers(driver)
     status = "Fuel Order"
     voucher_no = "FO3932"
-    open_voucher(driver,status,voucher_no)
+    grp_opn.group_orders(driver)
+    grp_opn.open_order(driver,status)
     post_voucher(driver)
 
 @pytest.mark.order(5)
 def test_cancel_voucher(driver,login,fuel_icon):
     login(EMAIL,PASSWORD)
     fuel_icon()
-    group_vouchers(driver)
     status = "Fuel Order"
     voucher_no = "FO3550"
-    open_voucher(driver,status,voucher_no)
+    grp_opn.group_orders(driver)
+    grp_opn.open_order(driver,status)
     cancel_voucher(driver)
     
 

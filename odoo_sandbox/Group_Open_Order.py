@@ -21,3 +21,5 @@ class Group_Open_Order:
         voucher = WebDriverWait(driver,10).until(EC.presence_of_element_located((By.XPATH, voucher_xpath)))
         voucher.click()
         time.sleep(3)
+
+    

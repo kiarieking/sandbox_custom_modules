@@ -4,6 +4,7 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from Group_Open_Order import Group_Open_Order
 import pytest
 from selenium.webdriver.common.keys import Keys
 
@@ -11,14 +12,15 @@ load_dotenv()
 EMAIL = os.getenv('EMAIL')
 PASSWORD = os.getenv('PASSWORD')
 
+grp_opn = Group_Open_Order()
+
 @pytest.mark.order(2)
 def test_edit_dispatch(driver,login,dispatch_icon):
     login(EMAIL,PASSWORD)
-    time.sleep(3)
     dispatch_icon()
     status = "Quotation"
-    group_dispatch(driver)
-    open_dispatch(driver,status)
+    grp_opn.group_orders(driver)
+    grp_opn.open_order(driver,status)
     start_editing_dispatch(driver)
     edit_shipper(driver)
     edit_vehicle(driver)

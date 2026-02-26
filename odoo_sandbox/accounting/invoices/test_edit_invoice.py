@@ -20,7 +20,7 @@ def test_edit_invoice(driver,login,accounting_icon):
     accounting_icon()
     status = "Draft"
     doc_type = "Invoices"
-    grp_opn.group_by(driver)
+    grp_opn.group_by(driver,doc_type)
     grp_opn.open_doc(driver,status)
     # edit_invoice_line(driver)
 

@@ -21,8 +21,8 @@ def test_edit_creditnote(driver,login,accounting_icon):
     doc_type = "Credit Notes"
     grp_opn.group_by(driver,doc_type)
     grp_opn.open_doc(driver,status)
-    # edit_credit_note(driver)
-    edit_invoice_line(driver)
+    edit_credit_note(driver)
+    # edit_invoice_line(driver)
     time.sleep(5)
 
 def group_creditnote(driver):

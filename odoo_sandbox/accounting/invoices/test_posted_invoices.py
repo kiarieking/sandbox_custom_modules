@@ -41,18 +41,19 @@ def test_send_print_invoice(driver,login,accounting_icon):
     accounting_icon()
     status = "Posted"
     doc_type = "Invoices"
+    invoice_no = "INV/2025/0417"
     grp_opn.group_by(driver,doc_type)
-    grp_opn.open_doc(driver,status)
+    grp_opn.open_specific_doc(driver,status,invoice_no)
     send_print_invoice(driver)
 
 
-def open_specific_invoice(driver,status,invoice_no):
-    status_xpath = f"//th[@class='o_group_name' and contains(normalize-space(), '{status}')]"
-    invoice_grp = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,status_xpath)))
-    invoice_grp.click()
-    invoice_xpath = f"//td[@name='name' and normalize-space()='{invoice_no}']"
-    invoice = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,invoice_xpath)))
-    invoice.click()
+# def open_specific_invoice(driver,status,invoice_no):
+#     status_xpath = f"//th[@class='o_group_name' and contains(normalize-space(), '{status}')]"
+#     invoice_grp = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,status_xpath)))
+#     invoice_grp.click()
+#     invoice_xpath = f"//td[@name='name' and normalize-space()='{invoice_no}']"
+#     invoice = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,invoice_xpath)))
+#     invoice.click()
 
 def make_payment(driver):
     register_payment_btn = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.NAME,"action_register_payment")))

@@ -136,7 +136,7 @@ pipeline{
                 status: "Build Status",
                 webhookUrl: "${MSTEAMS_HOOK}",
                 message: "Build failed",
-                color: "#FF0000 ",
+                color: "#FF0200 ",
             )
         }
     }

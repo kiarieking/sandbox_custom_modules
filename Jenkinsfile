@@ -9,105 +9,52 @@ pipeline{
         stage("Setup Environment"){
             steps{
                 script{
-                    if (env.BRANCH_NAME == 'Main'){
+                    sh '''
 
-                        echo "Setting up Main Branch!!"
+                    /home/kkiarie/scripts/ci_script.sh stage_setup_environment
 
-                         sh '''
-                    
-                             /home/kkiarie/scripts/ci_script.sh stage_setup_environment
-
-                            '''    
-
-                    }
-
-                    if (env.BRANCH_NAME == 'Work-pc'){
-
-                        sh '''
-                    
-                            /home/kkiarie/scripts/ci_script.sh stage_setup_environment
-
-                            '''    
-                    }
-
-                    if (env.BRANCH_NAME == 'Home-pc'){
-                        sh '''
-                    
-                           /home/kkiarie/scripts/ci_script.sh stage_setup_environment
-
-                            '''    
-                    }
+                    '''
+                }
                 }
                
             }
             
-        }
-
-        stage("Run the tests"){
+        
+        stage("run the tests"){
             steps{
                 script{
-                     if (env.BRANCH_NAME == 'Main'){
-                        sh '''
-                    
-                            /home/kkiarie/scripts/ci_script.sh stage_run_tests
+                     
+                    sh '''
 
+                        /home/kkiarie/scripts/ci_script.sh stage_run_tests
 
-                        '''
-                     }
-
-
-                    if (env.BRANCH_NAME == 'Work-pc'){
-
-                        sh '''
-                    
-                            /home/kkiarie/scripts/ci_script.sh stage_run_tests
-
-
-                        '''
-                    }
-
-                    if (env.BRANCH_NAME == 'Home-pc'){
-                        sh '''
-                    
-                            /home/kkiarie/scripts/ci_script.sh stage_run_tests
-                            
-
-                        '''
-                    }
-
+                    '''
 
                 }
                 
             }
         }
 
-        stage("Deploy changes!!"){
+        stage("Deploy changes!!!!"){
             steps{
                 script{
                     if (env.BRANCH_NAME == 'Main'){
                                 
                         sh '''
 
-                            ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/scripts/update_odoo.sh
+                            ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/custom_modules/quatrix-odoo/scripts/deploy_script.sh stage_deploy_changes
 
                         '''
                     }
 
-                    if (env.BRANCH_NAME == 'Work-pc'){
-
-                        sh '''
-                            ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/scripts/merge_to_main.sh
-                        
-                           '''
-                    }
-
-                    if (env.BRANCH_NAME == 'Home-pc'){
+                    else {
 
                         sh '''
 
-                        ssh kkiarie@sandbox.erp.quatrixglobal.com  /opt/scripts/merge_to_main.sh
+                            ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/custom_modules/quatrix-odoo/scripts/deploy_script.sh stage_merge_changes
 
-                            '''
+                        '''
+
                     }
 
 
@@ -135,9 +82,10 @@ pipeline{
             office365ConnectorSend(
                 status: "Build Status",
                 webhookUrl: "${MSTEAMS_HOOK}",
-                message: "Build failed",
-                color: "#FF0200 ",
+                message: "Build failed. Check build console on jenkins to see more details.",
+                color: "#FF0000 ",
             )
         }
     }
+
 }

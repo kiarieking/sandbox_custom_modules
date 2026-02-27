@@ -43,7 +43,7 @@ pipeline{
             
         }
 
-        stage("run the tests"){
+        stage("Run the tests"){
             steps{
                 script{
                      if (env.BRANCH_NAME == 'Main'){

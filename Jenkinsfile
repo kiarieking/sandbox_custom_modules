@@ -11,7 +11,7 @@ pipeline{
                 script{
                     if (env.BRANCH_NAME == 'Main'){
 
-                        echo "Setting up Main Branch!!!"
+                        echo "Setting up Main Branch!!"
 
                          sh '''
                     

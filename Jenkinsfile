@@ -6,12 +6,14 @@ pipeline{
 
     }
     stages{
-        stage("Setup Environment"){
+        stage("Setup Environment!!"){
             steps{
                 script{
                     sh '''
 
                     /home/kkiarie/scripts/ci_script.sh stage_setup_environment
+
+                    echo "i'm here!!!!!"
 
                     '''
                 }

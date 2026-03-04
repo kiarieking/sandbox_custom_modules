@@ -13,7 +13,7 @@ pipeline{
 
                     /home/kkiarie/scripts/ci_script.sh stage_setup_environment
 
-                    echo "i'm here!!!!!"
+                    echo "i'm here!!!!! Installed python3 venv"
 
                     '''
                 }

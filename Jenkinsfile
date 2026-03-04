@@ -35,7 +35,7 @@ pipeline{
             }
         }
 
-        stage("Deploy changes!!!!"){
+        stage("Deploy changes!!"){
             steps{
                 script{
                     if (env.BRANCH_NAME == 'Main'){

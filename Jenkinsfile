@@ -28,7 +28,7 @@ pipeline{
                      
                     sh '''
                         pwd
-                        
+
                         /home/kkiarie/scripts/ci_script.sh stage_run_tests
 
                     '''
@@ -38,7 +38,7 @@ pipeline{
             }
         }
 
-        stage("Deploy changes!!!!"){
+        stage("Deploy changes!!"){
             steps{
                 script{
                     if (env.BRANCH_NAME == 'Main'){

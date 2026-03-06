@@ -41,22 +41,24 @@ pipeline{
             steps{
                 script{
                     if (env.BRANCH_NAME == 'Main'){
-                                
+                        sshagent(['sandbox-ssh']){        
                         sh '''
 
                             ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/custom_modules/quatrix-odoo/scripts/deploy_script.sh stage_deploy_changes
 
                         '''
                     }
+                    }
 
                     else {
-
+                        sshagent(['sandbox-ssh']){
                         sh '''
 
                             ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/custom_modules/quatrix-odoo/scripts/deploy_script.sh stage_merge_changes
 
                         '''
 
+                    }
                     }
 
 

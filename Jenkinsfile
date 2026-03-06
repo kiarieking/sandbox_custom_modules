@@ -27,7 +27,8 @@ pipeline{
                 script{
                      
                     sh '''
-
+                        pwd
+                        
                         /home/kkiarie/scripts/ci_script.sh stage_run_tests
 
                     '''

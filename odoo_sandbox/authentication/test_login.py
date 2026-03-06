@@ -5,14 +5,14 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 
 
-def login(driver):
-    def _login(email,password):
-        driver.get('https://sandbox.erp.quatrixglobal.com/')
+# def login(driver):
+#     def _login(email,password):
+#         driver.get('https://sandbox.erp.quatrixglobal.com/')
 
-        driver.find_element(By.ID, "login").send_keys(email)
-        driver.find_element(By.ID, "password").send_keys(password)
-        driver.find_element(By.XPATH, "//button[@type='submit' and contains(@class, 'btn-primary')]").click()
-    return _login
+#         driver.find_element(By.ID, "login").send_keys(email)
+#         driver.find_element(By.ID, "password").send_keys(password)
+#         driver.find_element(By.XPATH, "//button[@type='submit' and contains(@class, 'btn-primary')]").click()
+#     return _login
 
 
 def logout(driver):

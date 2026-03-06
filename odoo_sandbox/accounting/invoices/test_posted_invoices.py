@@ -2,6 +2,7 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from accounting.Group_Open_doc import Group_Open_doc
 import pytest
 from dotenv import load_dotenv
 import os
@@ -9,94 +10,50 @@ import os
 load_dotenv()
 EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
-POD_PATH = os.getenv("POD_PATH")
+
+grp_opn = Group_Open_doc()
+
 
 @pytest.mark.order(22)
 def test_payment_invoice(driver,login,accounting_icon):
     login(EMAIL,PASSWORD)
     accounting_icon()
-    group_invoices(driver)
+    doc_type = "Invoices"
     status = "Posted"
-    invoice_no = "INV/2025/0417"
-    open_specific_invoices(driver,status,invoice_no)
+    invoice_no = "INV/2025/0418"
+    grp_opn.group_by(driver,doc_type)
+    open_specific_invoice(driver,status,invoice_no)
     make_payment(driver)
 
 @pytest.mark.order(23)
 def test_add_credit_note(driver,login,accounting_icon):
     login(EMAIL,PASSWORD)
     accounting_icon()
-    group_invoices(driver)
+    doc_type = "Invoices"
     status = "Posted"
-    invoice_no = "INV/2025/0417"
-    open_specific_invoices(driver,status,invoice_no)
+    grp_opn.group_by(driver,doc_type)
+    grp_opn.open_doc(driver,status)
     add_creditnote(driver)
 
 @pytest.mark.order(24)
 def test_send_print_invoice(driver,login,accounting_icon):
     login(EMAIL,PASSWORD)
     accounting_icon()
-    group_invoices(driver)
     status = "Posted"
-    open_invoices(driver,status)
+    doc_type = "Invoices"
+    invoice_no = "INV/2025/0417"
+    grp_opn.group_by(driver,doc_type)
+    grp_opn.open_specific_doc(driver,status,invoice_no)
     send_print_invoice(driver)
 
-def group_invoices(driver):
-    customers_btn = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, "//button[.//span[normalize-space()='Customers']]")))
-    customers_btn.click()
-    invoices = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,"//a[normalize-space()='Invoices']")))
-    invoices.click()
-    WebDriverWait(driver,15).until(
-        EC.visibility_of_element_located(
-            (By.XPATH, "//li[contains(@class,'breadcrumb-item') and contains(@class,'active')]//span[normalize-space()='Invoices']")
-        )
-    )
 
-    group_by = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,"//span[@class='o_dropdown_title' and normalize-space()='Group By']")))
-    group_by.click()
-    status = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, "//span[@role='menuitemcheckbox' and normalize-space()='Status']")))
-    status.click()
-
-def open_specific_invoices(driver,status,invoice_no):
-    status_xpath = f"//th[@class='o_group_name' and contains(normalize-space(), '{status}')]"
-    invoice_grp = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,status_xpath)))
-    invoice_grp.click()
-    invoice_xpath = f"//td[@name='name' and normalize-space()='{invoice_no}']"
-    invoice = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,invoice_xpath)))
-    invoice.click()
-
-def open_invoices(driver,status):
-    print(">>> USING NEW open_invoices <<<")
-    status_xpath = f"//th[@class='o_group_name' and contains(normalize-space(), '{status}')]"
-    invoice_grp = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,status_xpath)))
-    invoice_grp.click()
-    wait = WebDriverWait(driver, 20)
-    wait.until(
-        EC.presence_of_element_located(
-            (By.XPATH, "//tbody//tr[contains(@class,'o_data_row')]")
-        )
-    )
-
-    first_invoice_xpath = (
-        "(//tbody//tr[contains(@class,'o_data_row')]"
-        "//td[@name='name'])[1]"
-    )
-
-    # WAIT: element is visible (NOT clickable)
-    invoice = wait.until(
-        EC.visibility_of_element_located((By.XPATH, first_invoice_xpath))
-    )
-    invoice.click()
-
-    # Scroll into view (critical for Odoo)
-    #driver.execute_script(
-        # "arguments[0].scrollIntoView({block:'center'});", invoice
-    # )
-
-    # Click with JS fallback
-    # try:
-    #     invoice.click()
-    # except Exception:
-    #     driver.execute_script("arguments[0].click();", invoice)
+# def open_specific_invoice(driver,status,invoice_no):
+#     status_xpath = f"//th[@class='o_group_name' and contains(normalize-space(), '{status}')]"
+#     invoice_grp = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,status_xpath)))
+#     invoice_grp.click()
+#     invoice_xpath = f"//td[@name='name' and normalize-space()='{invoice_no}']"
+#     invoice = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,invoice_xpath)))
+#     invoice.click()
 
 def make_payment(driver):
     register_payment_btn = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.NAME,"action_register_payment")))
@@ -108,8 +65,6 @@ def make_payment(driver):
 def add_creditnote(driver):
     add_creditnote_btn = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.NAME,"action_reverse")))
     add_creditnote_btn.click()
-    refund_btn = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,"//label[normalize-space()='Full Refund']")))
-    refund_btn.click()
     reverse_btn = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.NAME,"reverse_moves")))
     reverse_btn.click()
     time.sleep(3)

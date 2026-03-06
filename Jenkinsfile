@@ -6,12 +6,14 @@ pipeline{
 
     }
     stages{
-        stage("Setup Environment"){
+        stage("Setup Environment!!"){
             steps{
                 script{
                     sh '''
 
                     /home/kkiarie/scripts/ci_script.sh stage_setup_environment
+
+                    echo "i'm here!!!!! Installed python3 venv. Changed requirements.txt path.Changed test directory path.Installed google-chrome and chromedriver.Added .env to test dir.Changed tes_login to test_invalid_login in script."
 
                     '''
                 }
@@ -39,22 +41,24 @@ pipeline{
             steps{
                 script{
                     if (env.BRANCH_NAME == 'Main'){
-                                
+                        sshagent(['sandbox-ssh']){        
                         sh '''
 
                             ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/custom_modules/quatrix-odoo/scripts/deploy_script.sh stage_deploy_changes
 
                         '''
                     }
+                    }
 
                     else {
-
+                        sshagent(['sandbox-ssh']){
                         sh '''
 
                             ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/custom_modules/quatrix-odoo/scripts/deploy_script.sh stage_merge_changes
 
                         '''
 
+                    }
                     }
 
 
@@ -82,7 +86,7 @@ pipeline{
             office365ConnectorSend(
                 status: "Build Status",
                 webhookUrl: "${MSTEAMS_HOOK}",
-                message: "Build failed",
+                message: "Build failed. Check build console on jenkins to see more details.",
                 color: "#FF0000 ",
             )
         }

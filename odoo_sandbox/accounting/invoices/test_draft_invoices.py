@@ -2,6 +2,7 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from accounting.Group_Open_doc import Group_Open_doc
 import pytest
 from dotenv import load_dotenv
 import os
@@ -10,14 +11,19 @@ load_dotenv()
 EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
 
+grp_opn = Group_Open_doc()
+
 @pytest.mark.order(18)
 def test_confirm_invoice(driver,login,accounting_icon):
     login(EMAIL,PASSWORD)
     accounting_icon()
-    group_invoices(driver)
+    # group_invoices(driver)
     status = "Draft"
     invoice_no = "INV/2023/0844"
-    open_invoices(driver,status) 
+    doc_type = "Invoices"
+    grp_opn.group_by(driver,doc_type)
+    grp_opn.open_doc(driver,status)
+    # open_invoices(driver,status) 
     confirm_invoice(driver)
     time.sleep(3)
 
@@ -25,10 +31,10 @@ def test_confirm_invoice(driver,login,accounting_icon):
 def test_preview_invoice(driver,login,accounting_icon):
     login(EMAIL,PASSWORD)
     accounting_icon()
-    group_invoices(driver)
     status = "Draft"
-    # invoice_no = "INV/2023/0844"
-    open_invoices(driver,status)
+    doc_type = "Invoices"
+    grp_opn.group_by(driver,doc_type)
+    grp_opn.open_doc(driver,status)
     preview_invoice(driver)
     time.sleep(3)
 
@@ -36,10 +42,11 @@ def test_preview_invoice(driver,login,accounting_icon):
 def test_cancel_invoice(driver,login,accounting_icon):
     login(EMAIL,PASSWORD)
     accounting_icon()
-    group_invoices(driver)
     status = "Draft"
     invoice_no = "INV/2023/0844"
-    open_invoices(driver,status)
+    doc_type = "Invoices"
+    grp_opn.group_by(driver,doc_type)
+    grp_opn.open_doc(driver,status)
     cancel_invoice(driver)
     time.sleep(3)
 

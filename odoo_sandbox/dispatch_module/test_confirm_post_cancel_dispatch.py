@@ -4,6 +4,7 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from Group_Open_Order import Group_Open_Order
 import pytest
 
 load_dotenv()
@@ -11,35 +12,35 @@ EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
 POD_PATH = os.getenv("POD_PATH")
 
-# @pytest.mark.order(15)
-# def test_confirm_dispatch(driver,login,dispatch_icon):
-#     status = "Quotation"
-#     # dispatch_no = "DO11192"
-#     login(EMAIL,PASSWORD)
-#     dispatch_icon()
-#     group_dispatch(driver)
-#     open_dispatch(driver,status)
-#     complete_delivery(driver)
-#     time.sleep(5)
+
+grp_opn = Group_Open_Order()
+
+@pytest.mark.order(15)
+def test_confirm_dispatch(driver,login,dispatch_icon):
+    status = "Quotation"
+    login(EMAIL,PASSWORD)
+    dispatch_icon()
+    grp_opn.group_orders(driver)
+    grp_opn.open_order(driver,status)
+    complete_delivery(driver)
+    time.sleep(5)
 
 @pytest.mark.order(16)
 def test_post_dispatch(driver,login,dispatch_icon):
     status = "Dispatch Order"
-    # dispatch_no = "DO7528"
     login(EMAIL,PASSWORD)
     dispatch_icon()
-    group_dispatch(driver)
-    open_dispatch(driver,status)
+    grp_opn.group_orders(driver)
+    grp_opn.open_order(driver,status)
     post_dispatch(driver)
 
 @pytest.mark.order(17)
 def test_cancel_dispatch(driver, login, dispatch_icon):
     status = "Posted"
-    # dispatch_no = "DO9987"
     login(EMAIL,PASSWORD)
     dispatch_icon()
-    group_dispatch(driver)
-    open_dispatch(driver,status)
+    grp_opn.group_orders(driver)
+    grp_opn.open_order(driver,status)
     cancel_dispatch(driver)
 
 
@@ -65,14 +66,13 @@ def complete_delivery(driver):
     time.sleep(5)
     pod_input = WebDriverWait(driver,10).until(EC.presence_of_element_located((By.XPATH, "//input[@type='file' and @name='ufile']")))
     pod_input.send_keys(POD_PATH)
-    # time.sleep(5)
-    # wait = WebDriverWait(driver,15)
-    # wait.until(
-    #     EC.invisibility_of_element_located(
-    #         (By.CSS_SELECTOR, "main.modal-body")
-    #     )
-    #     )
-
+    time.sleep(5)
+    wait = WebDriverWait(driver,15)
+    wait.until(
+    EC.invisibility_of_element_located(
+        (By.CSS_SELECTOR, "main.modal-body")
+    )
+        )
     save_btn = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, "//button[@type='button' and contains(@class, 'o_form_button_save')]")))
     save_btn.click()
     time.sleep(5)                                          

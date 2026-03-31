@@ -2,18 +2,15 @@ import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from dotenv import load_dotenv
+import os
 import time
 
+load_dotenv()
 
-def login(driver):
-    def _login(email,password):
-        driver.get('https://sandbox.erp.quatrixglobal.com/')
-
-        driver.find_element(By.ID, "login").send_keys(email)
-        driver.find_element(By.ID, "password").send_keys(password)
-        driver.find_element(By.XPATH, "//button[@type='submit' and contains(@class, 'btn-primary')]").click()
-    return _login
-
+email = os.getenv("EMAIL")
+password = os.getenv("PASSWORD")
+url = os.getenv("URL")
 
 def logout(driver):
     driver.get('https://sandbox.erp.quatrixglobal.com/')
@@ -25,8 +22,8 @@ def logout(driver):
     
     
 def test_valid_login(driver, login):
-    login("kelvin.kiarie@quatrixglobal.com", "$kingara120")
-    discuss = WebDriverWait(driver,10).until(EC.presence_of_element_located((By.XPATH, "//a[@data-menu-xmlid='mail.menu_root_discuss']")))
+    login(email,password)
+    discuss = WebDriverWait(driver,20).until(EC.visibility_of_element_located((By.XPATH, "//a[@data-menu-xmlid='mail.menu_root_discuss']")))
     assert "Discuss" in discuss.text.strip()
     logout(driver)
     time.sleep(3)

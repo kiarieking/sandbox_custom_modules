@@ -13,7 +13,7 @@ pipeline{
 
                     /home/kkiarie/scripts/ci_script.sh stage_setup_environment
 
-                    echo "i'm here!!!!! Installed python3 venv. Changed requirements.txt path.Changed test directory path.Installed google-chrome and chromedriver.Added .env to test dir.Changed tes_login to test_invalid_login in script."
+                    echo "i'm here!!!!! New setup on  for jenkins!! Installed python3 venv. Changed requirements.txt path.Changed test directory path.Installed google-chrome and chromedriver.Added .env to test dir.Changed tes_login to test_invalid_login in script."
 
                     '''
                 }
@@ -27,6 +27,7 @@ pipeline{
                 script{
                      
                     sh '''
+                        pwd
 
                         /home/kkiarie/scripts/ci_script.sh stage_run_tests
 
@@ -37,7 +38,7 @@ pipeline{
             }
         }
 
-        stage("Deploy changes!!!!"){
+        stage("Deploy changes!!!"){
             steps{
                 script{
                     if (env.BRANCH_NAME == 'Main'){

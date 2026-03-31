@@ -13,7 +13,7 @@ pipeline{
 
                     /home/kkiarie/scripts/ci_script.sh stage_setup_environment
 
-                    echo "i'm here!!!!! New setup to implement.!!! Installed python3 venv. Changed requirements.txt path.Changed test directory path.Installed google-chrome and chromedriver.Added .env to test dir.Changed tes_login to test_invalid_login in script."
+                    echo "i'm here!!!!! New setup to implement.!!! Set up Teams notification. Installed python3 venv. Changed requirements.txt path.Changed test directory path.Installed google-chrome and chromedriver.Added .env to test dir.Changed tes_login to test_invalid_login in script."
 
                     '''
                 }

@@ -42,7 +42,7 @@ pipeline{
             steps{
                 script{
                     if (env.BRANCH_NAME == 'Main'){
-                        sshagent(['be204451-2ebb-41a7-b6fa-503400e7fbd0']){        
+                        sshagent(['sandbox-ssh']){        
                         sh '''
 
                             ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/custom_modules/quatrix-odoo/scripts/deploy_script.sh stage_deploy_changes

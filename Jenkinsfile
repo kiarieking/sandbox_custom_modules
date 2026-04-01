@@ -44,6 +44,9 @@ pipeline{
                     if (env.BRANCH_NAME == 'Main'){
                         sshagent(['sandbox-ssh']){        
                         sh '''
+                            mkdir -p ~/.ssh
+                            chmod 700 ~/.ssh
+                            ssh-keyscan -H sandbox.erp.quatrixglobal.com >> ~/.ssh/known_hosts
 
                             ssh kkiarie@sandbox.erp.quatrixglobal.com /opt/custom_modules/quatrix-odoo/scripts/deploy_script.sh stage_deploy_changes
 
